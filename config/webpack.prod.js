@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeJsPlugin = require("optimize-js-plugin");
 const path = require('path');
 
 const outputPath = path.join(__dirname, '../dist');
@@ -37,6 +38,9 @@ module.exports = function(options) {
     },
     plugins: [
       new webpack.NoEmitOnErrorsPlugin(),
+      new OptimizeJsPlugin({
+              sourceMap: false
+          }),
       new UglifyJsPlugin({
               parallel: true,
               uglifyOptions: {
@@ -50,7 +54,7 @@ module.exports = function(options) {
                 }
               },
               warnings: true,
-            }),      
+            }),
       new HtmlWebpackPlugin({
         template: './src/index.html',
         inject: 'body',
