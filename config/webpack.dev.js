@@ -3,6 +3,12 @@ const webpack = require('webpack');
 // import HtmlWebpackPlugin from 'html-webpack-plugin';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+function hasProcessFlag(flag) {
+  return process.argv.join('').indexOf(flag) > -1;
+}
+
+const HMR = hasProcessFlag('hot');
+
 module.exports = function(options) {
   return {
     entry: {
@@ -17,13 +23,9 @@ module.exports = function(options) {
         {
           test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          use: {
-            loader: 'elm-webpack-loader',
-            options: {
-              verbose: true,
-              warn: true
-            }
-          }
+          use: HMR?
+          ['elm-hot-loader','elm-webpack-loader']
+          :['elm-webpack-loader']
         }
       ],
       noParse: /\.elm$/

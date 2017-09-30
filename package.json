@@ -8,13 +8,15 @@
     "build": "webpack --config config/webpack.prod.js",
     "build:prod": "npm run webpack -- --config config/webpack.prod.js  --progress --profile --bail",
     "server:dev": "webpack-dev-server --config config/webpack.dev.js",
-    "server": "npm run server:dev",
-    "start": "npm run server:dev",
+    "server:dev:hmr": "webpack-dev-server --config config/webpack.dev.js --hot",
+    "server": "npm run server:dev:hmr",
+    "start": "npm run server:dev:hmr",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "elm-hot-loader": "^0.5.4",
     "elm-webpack-loader": "^4.3.1",
     "html-webpack-plugin": "^2.30.1",
     "optimize-js-plugin": "0.0.4",
