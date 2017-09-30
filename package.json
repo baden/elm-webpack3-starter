@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "elm-package install -y",
+    "build": "webpack --config config/webpack.prod.js",
+    "build:prod": "npm run webpack -- --config config/webpack.prod.js  --progress --profile --bail",
     "server:dev": "webpack-dev-server --config config/webpack.dev.js",
     "server": "npm run server:dev",
     "start": "npm run server:dev",
@@ -15,6 +17,7 @@
   "devDependencies": {
     "elm-webpack-loader": "^4.3.1",
     "html-webpack-plugin": "^2.30.1",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   }
