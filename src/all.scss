@@ -7,3 +7,14 @@
   // padding: 10px;
   color: blue;
 }
+
+.link_control {
+  padding: 10px;
+  margin: 2px;
+  background-color: lightgreen;
+  cursor: pointer;
+}
+
+.link_control:hover {
+  background-color: green;
+}
