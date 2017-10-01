@@ -1,44 +1,77 @@
 module App exposing (..)
 
-import Html exposing (Html, beginnerProgram, button, div, text)
-import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
+import Html exposing (Html, div, text)
+import IncDec
 
 
 type alias Model =
-    Int
-
-
-model : Model
-model =
-    0
+    { incdec : IncDec.Model
+    }
 
 
 type Msg
-    = Increment
-    | Decrement
+    = NoOp
+    | IncDecMessage IncDec.Msg
 
 
-update : Msg -> Model -> Model
+
+-- TODO: IncDec nested init:Cmds
+-- defaultModel : Model
+-- defaultModel =
+--     { incdec = IncDec.model }
+
+
+init : ( Model, Cmd Msg )
+init =
+    let
+        ( incdecModel, incdecCmd ) =
+            IncDec.init
+    in
+    ( { incdec = incdecModel }
+    , Cmd.batch [ Cmd.map IncDecMessage incdecCmd ]
+    )
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Increment ->
-            model + 1
+        NoOp ->
+            ( model, Cmd.none )
 
-        Decrement ->
-            model - 1
+        IncDecMessage subMsg ->
+            let
+                ( newIncDecModel, subCmd ) =
+                    IncDec.update subMsg model.incdec
+            in
+            ( { model | incdec = newIncDecModel }
+            , Cmd.batch [ Cmd.map IncDecMessage subCmd ]
+            )
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "component" ]
-        [ div [] [ text "Header:" ]
-        , button [ onClick Decrement ] [ text "-" ]
-        , div [] [ text (toString model) ]
-        , button [ onClick Increment ] [ text "+" ]
+    div []
+        [ text "App component"
+        , IncDec.view model.incdec |> Html.map IncDecMessage
+        ]
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    let
+        incdecSubs =
+            IncDec.subscriptions model.incdec
+    in
+    Sub.batch
+        [ Sub.map IncDecMessage incdecSubs
         ]
 
 
 main : Program Never Model Msg
 main =
-    beginnerProgram { model = model, view = view, update = update }
+    Html.program
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
