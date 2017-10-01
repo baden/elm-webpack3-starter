@@ -1,7 +1,7 @@
 module IncDec exposing (Model, Msg, init, subscriptions, update, view)
 
 import Html exposing (Html, button, div, text)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, type_)
 import Html.Events exposing (onClick)
 import Task
 import Time exposing (Time, second)
@@ -46,12 +46,16 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [ class "component" ]
+    let
+        t =
+            floor (model.time / 1000)
+    in
+    div [ class "component jumbotron" ]
         [ div [] [ text "IncDec component" ]
-        , button [ onClick Decrement ] [ text "-" ]
+        , button [ type_ "button", class "btn btn-primary", onClick Decrement ] [ text "-" ]
         , div [] [ text (toString model.value) ]
-        , button [ onClick Increment ] [ text "+" ]
-        , div [] [ text "time:", text (toString model.time) ]
+        , button [ type_ "button", class "btn btn-primary", onClick Increment ] [ text "+" ]
+        , div [] [ text "time:", text (toString t) ]
         ]
 
 

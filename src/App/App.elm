@@ -1,6 +1,7 @@
 module App exposing (..)
 
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, h1, text)
+import Html.Attributes exposing (class)
 import IncDec
 
 
@@ -50,9 +51,11 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text "App component"
-        , IncDec.view model.incdec |> Html.map IncDecMessage
+    div [ class "container-overflow-wrap" ]
+        [ div [ class "container" ]
+            [ h1 [] [ text "App component" ]
+            , IncDec.view model.incdec |> Html.map IncDecMessage
+            ]
         ]
 
 
