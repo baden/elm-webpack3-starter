@@ -20,3 +20,7 @@ npm test
 npm i
 npm run build
 ```
+
+## Helpful links
+
+* http://elm-news.com/

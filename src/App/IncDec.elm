@@ -26,9 +26,20 @@ type Msg
     | Tick Time
 
 
+
+-- Warning! This method is not recomended. This is for example only.
+-- Look https://medium.com/elm-shorts/how-to-turn-a-msg-into-a-cmd-msg-in-elm-5dd095175d84
+
+
+send : msg -> Cmd msg
+send msg =
+    Task.succeed msg
+        |> Task.perform identity
+
+
 init : ( Model, Cmd Msg )
 init =
-    ( defaultModel, Cmd.none )
+    ( defaultModel, Cmd.batch [ send Increment ] )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
