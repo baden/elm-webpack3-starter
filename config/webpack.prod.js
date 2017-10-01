@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const path = require('path');
 
@@ -14,7 +15,7 @@ module.exports = function(options) {
     },
     output: {
       path: outputPath,
-      filename: 'static/js/app.js',
+      filename: 'js/app.js',
     },
     module: {
       rules: [
@@ -22,6 +23,18 @@ module.exports = function(options) {
         //   test: /\.js$/,
         //   use: 'babel-loader'
         // },
+        {
+          test: /\.(scss|sass|css)$/i,
+          use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {minimize: true}
+              }, 'sass-loader'
+            ]
+          }),
+        },
         {
           test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
@@ -55,6 +68,7 @@ module.exports = function(options) {
               },
               warnings: true,
             }),
+      new ExtractTextPlugin("css/[name]-[contenthash].css"),
       new HtmlWebpackPlugin({
         template: './src/index.html',
         inject: 'body',
