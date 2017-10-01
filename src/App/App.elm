@@ -3,6 +3,7 @@ module App exposing (..)
 import Html exposing (Html, div, h1, text)
 import Html.Attributes exposing (class)
 import IncDec
+import Return exposing (Return)
 
 
 type alias Model =
@@ -40,13 +41,20 @@ update msg model =
             ( model, Cmd.none )
 
         IncDecMessage subMsg ->
-            let
-                ( newIncDecModel, subCmd ) =
-                    IncDec.update subMsg model.incdec
-            in
-            ( { model | incdec = newIncDecModel }
-            , Cmd.batch [ Cmd.map IncDecMessage subCmd ]
-            )
+            IncDec.update subMsg model.incdec
+                |> Return.mapBoth
+                    IncDecMessage
+                    (\m -> { model | incdec = m })
+
+
+
+-- let
+--     ( newIncDecModel, subCmd ) =
+--         IncDec.update subMsg model.incdec
+-- in
+-- ( { model | incdec = newIncDecModel }
+-- , Cmd.batch [ Cmd.map IncDecMessage subCmd ]
+-- )
 
 
 view : Model -> Html Msg
