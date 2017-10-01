@@ -1,8 +1,10 @@
 module IncDec exposing (Model, Msg, init, subscriptions, update, view)
 
+import Api exposing (Account, fetch)
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, type_)
 import Html.Events exposing (onClick)
+import Http
 import Task
 import Time exposing (Time, second)
 
@@ -10,6 +12,7 @@ import Time exposing (Time, second)
 type alias Model =
     { value : Int
     , time : Time
+    , message : String
     }
 
 
@@ -17,6 +20,7 @@ defaultModel : Model
 defaultModel =
     { value = 0
     , time = 0
+    , message = "Getting account..."
     }
 
 
@@ -24,6 +28,7 @@ type Msg
     = Increment
     | Decrement
     | Tick Time
+    | FetchedAccount (Result Http.Error Api.Account)
 
 
 
@@ -39,7 +44,12 @@ send msg =
 
 init : ( Model, Cmd Msg )
 init =
-    ( defaultModel, Cmd.batch [ send Increment ] )
+    ( defaultModel
+    , Cmd.batch
+        [ send Increment
+        , Http.send FetchedAccount (Api.fetch "3smiHOIcmadduHckMvdzHHqHU4ltBszj")
+        ]
+    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -54,6 +64,23 @@ update msg model =
         Tick newTime ->
             ( { model | time = newTime }, Cmd.none )
 
+        FetchedAccount (Err (Http.BadStatus badStatus)) ->
+            case badStatus.status.code of
+                404 ->
+                    ( { model | message = "Account is not found" }, Cmd.none )
+
+                401 ->
+                    ( { model | message = "Need authirization" }, Cmd.none )
+
+                _ ->
+                    ( { model | message = badStatus.status.message }, Cmd.none )
+
+        FetchedAccount (Err error) ->
+            ( { model | message = toString error }, Cmd.none )
+
+        FetchedAccount (Ok account) ->
+            ( { model | message = toString account }, Cmd.none )
+
 
 view : Model -> Html Msg
 view model =
@@ -67,6 +94,7 @@ view model =
         , div [] [ text (toString model.value) ]
         , button [ type_ "button", class "btn btn-primary", onClick Increment ] [ text "+" ]
         , div [] [ text "time:", text (toString t) ]
+        , div [] [ text model.message ]
         ]
 
 
