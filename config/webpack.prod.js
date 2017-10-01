@@ -15,7 +15,7 @@ module.exports = function(options) {
     },
     output: {
       path: outputPath,
-      filename: 'js/app.js',
+      filename: 'js/[name]-[hash].js',
     },
     module: {
       rules: [
