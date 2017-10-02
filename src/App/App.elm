@@ -58,21 +58,21 @@ init location =
         ( incdecModel, incdecCmd ) =
             IncDec.init
     in
-    loadPage location
-        { currentPage = NotFound
-        , incdec = incdecModel
-        , loaderStyle =
-            Animation.styleWith
-                (Animation.spring
-                    { stiffness = 70
-                    , damping = 20
-                    }
-                )
-                [ Animation.opacity 0
-                , Animation.display Animation.none
-                ]
-        }
-        |> Return.command (Cmd.map IncDecMessage incdecCmd)
+        loadPage location
+            { currentPage = NotFound
+            , incdec = incdecModel
+            , loaderStyle =
+                Animation.styleWith
+                    (Animation.spring
+                        { stiffness = 70
+                        , damping = 20
+                        }
+                    )
+                    [ Animation.opacity 0
+                    , Animation.display Animation.none
+                    ]
+            }
+            |> Return.command (Cmd.map IncDecMessage incdecCmd)
 
 
 
@@ -87,44 +87,44 @@ update msg model =
         _ =
             Debug.log "update" msg
     in
-    case msg of
-        NoOp ->
-            ( model, Cmd.none )
+        case msg of
+            NoOp ->
+                ( model, Cmd.none )
 
-        UrlChange location ->
-            loadPage location model
+            UrlChange location ->
+                loadPage location model
 
-        PageMsg pageMsg ->
-            updateCurrentPage pageMsg model.currentPage
-                |> Return.mapBoth PageMsg (\page -> { model | currentPage = page })
+            PageMsg pageMsg ->
+                updateCurrentPage pageMsg model.currentPage
+                    |> Return.mapBoth PageMsg (\page -> { model | currentPage = page })
 
-        IncDecMessage subMsg ->
-            IncDec.update subMsg model.incdec
-                |> Return.mapBoth
-                    IncDecMessage
-                    (\m -> { model | incdec = m })
+            IncDecMessage subMsg ->
+                IncDec.update subMsg model.incdec
+                    |> Return.mapBoth
+                        IncDecMessage
+                        (\m -> { model | incdec = m })
 
-        NavigateTo pathname ->
-            ( model, Cmd.batch [ Navigation.newUrl pathname ] )
+            NavigateTo pathname ->
+                ( model, Cmd.batch [ Navigation.newUrl pathname ] )
 
-        HomeClicked ->
-            ( model, Cmd.batch [ Navigation.newUrl "/" ] )
+            HomeClicked ->
+                ( model, Cmd.batch [ Navigation.newUrl "/" ] )
 
-        AccountClicked ->
-            ( model, Cmd.batch [ Navigation.newUrl "/account" ] )
+            AccountClicked ->
+                ( model, Cmd.batch [ Navigation.newUrl "/account" ] )
 
-        Animate animMsg ->
-            ( { model
-                | loaderStyle = Animation.update animMsg model.loaderStyle
-              }
-            , Cmd.none
-            )
+            Animate animMsg ->
+                ( { model
+                    | loaderStyle = Animation.update animMsg model.loaderStyle
+                  }
+                , Cmd.none
+                )
 
-        StartLoading ->
-            ( { model | loaderStyle = showLoader model.loaderStyle }, Cmd.none )
+            StartLoading ->
+                ( { model | loaderStyle = showLoader model.loaderStyle }, Cmd.none )
 
-        StopLoading ->
-            ( { model | loaderStyle = hideLoader model.loaderStyle }, Cmd.none )
+            StopLoading ->
+                ( { model | loaderStyle = hideLoader model.loaderStyle }, Cmd.none )
 
 
 updateCurrentPage : PageMsg -> PageModel -> ( PageModel, Cmd PageMsg )
@@ -143,7 +143,7 @@ updateCurrentPage msg model =
                 _ =
                     Debug.log "received unexpected message" msg
             in
-            Return.singleton model
+                Return.singleton model
 
 
 loadPage : Navigation.Location -> Model -> ( Model, Cmd Msg )
@@ -160,27 +160,27 @@ loadPage location model =
                     }
                 )
     in
-    case Page.parse location of
-        Page.Home ->
-            HomePage.init
-                |> mapToCurrentPage HomePageMsg HomePage
+        case Page.parse location of
+            Page.Home ->
+                HomePage.init
+                    |> mapToCurrentPage HomePageMsg HomePage
 
-        -- |> Return.command pageView
-        Page.Account ->
-            AccountPage.init
-                |> mapToCurrentPage AccountPageMsg AccountPage
+            -- |> Return.command pageView
+            Page.Account ->
+                AccountPage.init
+                    |> mapToCurrentPage AccountPageMsg AccountPage
 
-        -- |> Return.effect_ fetchNewsletterFiles
-        -- |> Return.command pageView
-        --
-        -- Page.System name ->
-        --     SystemPage.init name
-        --         |> mapToCurrentPage NewsletterMsg NewsletterPage
-        --         |> Return.andThen (fetchNewsletter name)
-        --         |> Return.effect_ fetchNewsletterFiles
-        --         |> Return.command pageView
-        Page.NotFound ->
-            ( model, Cmd.none )
+            -- |> Return.effect_ fetchNewsletterFiles
+            -- |> Return.command pageView
+            --
+            -- Page.System name ->
+            --     SystemPage.init name
+            --         |> mapToCurrentPage NewsletterMsg NewsletterPage
+            --         |> Return.andThen (fetchNewsletter name)
+            --         |> Return.effect_ fetchNewsletterFiles
+            --         |> Return.command pageView
+            Page.NotFound ->
+                ( model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -206,7 +206,15 @@ view model =
                     , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
                     ]
                 ]
-            , IncDec.view model.incdec |> Html.map IncDecMessage
+            , div [ class "row" ]
+                [ div [ class "col-sm-6" ]
+                    [ IncDec.view model.incdec |> Html.map IncDecMessage
+                    ]
+                , div
+                    [ class "col-sm-6" ]
+                    [ IncDec.view model.incdec |> Html.map IncDecMessage
+                    ]
+                ]
             , body model
             ]
         , loader model.loaderStyle
@@ -219,7 +227,7 @@ linkTo pathname =
         linkAttrs =
             clickTo pathname
     in
-    \attrs contents -> a (List.append attrs linkAttrs) contents
+        \attrs contents -> a (List.append attrs linkAttrs) contents
 
 
 clickTo : String -> List (Html.Attribute Msg)
@@ -279,11 +287,11 @@ subscriptions model =
         incdecSubs =
             IncDec.subscriptions model.incdec
     in
-    Sub.batch
-        [ Sub.map (PageMsg << HomePageMsg) HomePage.subscriptions
-        , Sub.map IncDecMessage incdecSubs
-        , Animation.subscription Animate [ model.loaderStyle ]
-        ]
+        Sub.batch
+            [ Sub.map (PageMsg << HomePageMsg) HomePage.subscriptions
+            , Sub.map IncDecMessage incdecSubs
+            , Animation.subscription Animate [ model.loaderStyle ]
+            ]
 
 
 main : Program Never Model Msg
