@@ -30,10 +30,25 @@ npm run build
 * http://builtwithelm.co/
 * https://github.com/mdgriffith/elm-style-animation
 * https://github.com/debois/awesome-elm
+* https://terezka.github.io/elm-plot/
+* https://github.com/Skinney/elm-array-exploration
+
+## Libraries
+
+* http://package.elm-lang.org/packages/rluiten/elm-date-extra/latest
 
 ## Useless links (Just kidding)
 
 * https://github.com/ohanhi/elm-ement
+
+## Learn links
+
+* https://github.com/zwilias/elm-demystify-decoders
+
+## Testing, benchmarking, etc.
+
+* https://blog.ilias.xyz/optimising-for-performance-in-elm-pt-4-48230d4c988
+* http://package.elm-lang.org/packages/BrianHicks/elm-benchmark/1.0.2
 
 ## TODO
 

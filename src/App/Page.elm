@@ -7,6 +7,7 @@ import UrlParser exposing (..)
 type Page
     = Home
     | Account
+    | Login
       -- | System String
     | NotFound
 
@@ -21,7 +22,7 @@ pageParser : Parser (Page -> a) a
 pageParser =
     oneOf
         [ map Account (s "account")
+        , map Login (s "login")
         , map Home (s "")
-
-        -- , map System (s "system" </> string)
+          -- , map System (s "system" </> string)
         ]

@@ -11,6 +11,7 @@ import Navigation
 import Page
 import Pages.Account as AccountPage
 import Pages.Home as HomePage
+import Pages.Login as LoginPage
 import Return exposing (Return)
 
 
@@ -24,6 +25,7 @@ type alias Model =
 type PageModel
     = HomePage HomePage.Model
     | AccountPage AccountPage.Model
+    | LoginPage LoginPage.Model
     | NotFound
 
 
@@ -32,8 +34,8 @@ type Msg
     | UrlChange Navigation.Location
     | PageMsg PageMsg
     | IncDecMessage IncDec.Msg
-    | HomeClicked
-    | AccountClicked
+      -- | HomeClicked
+      -- | AccountClicked
     | NavigateTo String
     | Animate Animation.Msg
     | StartLoading
@@ -43,6 +45,7 @@ type Msg
 type PageMsg
     = HomePageMsg HomePage.Msg
     | AccountPageMsg AccountPage.Msg
+    | LoginPageMsg LoginPage.Msg
 
 
 
@@ -107,12 +110,11 @@ update msg model =
             NavigateTo pathname ->
                 ( model, Cmd.batch [ Navigation.newUrl pathname ] )
 
-            HomeClicked ->
-                ( model, Cmd.batch [ Navigation.newUrl "/" ] )
-
-            AccountClicked ->
-                ( model, Cmd.batch [ Navigation.newUrl "/account" ] )
-
+            -- HomeClicked ->
+            --     ( model, Cmd.batch [ Navigation.newUrl "/" ] )
+            --
+            -- AccountClicked ->
+            --     ( model, Cmd.batch [ Navigation.newUrl "/account" ] )
             Animate animMsg ->
                 ( { model
                     | loaderStyle = Animation.update animMsg model.loaderStyle
@@ -137,6 +139,10 @@ updateCurrentPage msg model =
         ( AccountPageMsg msg, AccountPage page ) ->
             AccountPage.update msg page
                 |> Return.mapBoth AccountPageMsg AccountPage
+
+        ( LoginPageMsg msg, LoginPage page ) ->
+            LoginPage.update msg page
+                |> Return.mapBoth LoginPageMsg LoginPage
 
         x ->
             let
@@ -170,6 +176,10 @@ loadPage location model =
                 AccountPage.init
                     |> mapToCurrentPage AccountPageMsg AccountPage
 
+            Page.Login ->
+                LoginPage.init
+                    |> mapToCurrentPage LoginPageMsg LoginPage
+
             -- |> Return.effect_ fetchNewsletterFiles
             -- |> Return.command pageView
             --
@@ -194,16 +204,17 @@ view model =
                     , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
                     ]
                 ]
-            , div [ class "row row-backbordered" ]
-                [ div [ class "col-sm-12" ]
-                    [ link "Домой" HomeClicked
-                    , link "Пользователь" AccountClicked
-                    ]
-                ]
+              -- , div [ class "row row-backbordered" ]
+              --     [ div [ class "col-sm-12" ]
+              --         [ link "Домой" HomeClicked
+              --         , link "Пользователь" AccountClicked
+              --         ]
+              --     ]
             , div [ class "row" ]
                 [ div [ class "col-sm-12" ]
                     [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
                     , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
+                    , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
                     ]
                 ]
             , div [ class "row" ]
@@ -250,6 +261,10 @@ body model =
         AccountPage page ->
             AccountPage.view page
                 |> Html.map (PageMsg << AccountPageMsg)
+
+        LoginPage page ->
+            LoginPage.view page
+                |> Html.map (PageMsg << LoginPageMsg)
 
         -- NewslettersPage page ->
         --     NewslettersPage.view model.newsletterFiles page
