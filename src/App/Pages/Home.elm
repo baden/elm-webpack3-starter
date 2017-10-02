@@ -41,8 +41,8 @@ view model =
     div [] [ text <| "HOME: WIP" ++ toString model ]
 
 
-subscriptions : Sub Msg
-subscriptions =
+subscriptions : Model -> Sub Msg
+subscriptions _ =
     Sub.batch
         [ Time.every second Tick
         ]

@@ -86,6 +86,6 @@ info maybe_account =
                 ]
 
 
-subscriptions : Sub Msg
-subscriptions =
+subscriptions : Model -> Sub Msg
+subscriptions _ =
     Sub.none

@@ -144,7 +144,7 @@ updateCurrentPage msg model =
             LoginPage.update msg page
                 |> Return.mapBoth LoginPageMsg LoginPage
 
-        x ->
+        _ ->
             let
                 _ =
                     Debug.log "received unexpected message" msg
@@ -301,9 +301,23 @@ subscriptions model =
     let
         incdecSubs =
             IncDec.subscriptions model.incdec
+
+        pageSubs =
+            case model.currentPage of
+                HomePage page ->
+                    Sub.map (PageMsg << HomePageMsg) (HomePage.subscriptions page)
+
+                AccountPage page ->
+                    Sub.map (PageMsg << AccountPageMsg) (AccountPage.subscriptions page)
+
+                LoginPage page ->
+                    Sub.map (PageMsg << LoginPageMsg) (LoginPage.subscriptions page)
+
+                NotFound ->
+                    Sub.none
     in
         Sub.batch
-            [ Sub.map (PageMsg << HomePageMsg) HomePage.subscriptions
+            [ pageSubs
             , Sub.map IncDecMessage incdecSubs
             , Animation.subscription Animate [ model.loaderStyle ]
             ]

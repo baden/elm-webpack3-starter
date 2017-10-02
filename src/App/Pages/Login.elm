@@ -82,6 +82,6 @@ ariaDescribedby =
     attribute "ariaDescribedby"
 
 
-subscriptions : Sub Msg
-subscriptions =
+subscriptions : Model -> Sub Msg
+subscriptions _ =
     Sub.none
