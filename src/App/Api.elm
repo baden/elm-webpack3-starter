@@ -1,7 +1,8 @@
 module Api exposing (Account, fetch)
 
 import Http
-import Json.Decode exposing (..)
+import Json.Decode as JD
+import Time
 
 
 type alias Account =
@@ -16,14 +17,27 @@ url =
 
 
 fetch : String -> Http.Request Account
-fetch token =
-    Http.get
-        (url ++ "?access_token=" ++ token)
-        decoder
+fetch accessToken =
+    -- Http.get
+    Http.request
+        { method = "GET"
+        , headers =
+            [-- Http.header
+             --     "authorization"
+             --     ("bearer " ++ accessToken)
+            ]
+        , url = url ++ "?access_token=" ++ accessToken
+        , body = Http.emptyBody
+        , expect = Http.expectJson decoder
+
+        -- , timeout = Just Time.minute
+        , timeout = Nothing
+        , withCredentials = False
+        }
 
 
-decoder : Decoder Account
+decoder : JD.Decoder Account
 decoder =
-    map2 Account
-        (field "id" string)
-        (field "username" string)
+    JD.map2 Account
+        (JD.field "id" JD.string)
+        (JD.field "username" JD.string)

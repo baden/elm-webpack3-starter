@@ -24,3 +24,5 @@ npm run build
 ## Helpful links
 
 * http://elm-news.com/
+* https://github.com/lukewestby/elm-http-builder
+* https://realfavicongenerator.net/
