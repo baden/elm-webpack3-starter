@@ -151,8 +151,6 @@ view model =
     div [ class "container-overflow-wrap" ]
         [ div [ class "container" ]
             [ h1 [] [ text "App component" ]
-            , IncDec.view model.incdec |> Html.map IncDecMessage
-            , body model
             , div []
                 [ link "Домой" HomeClicked
                 , link "Пользователь" AccountClicked
@@ -161,6 +159,8 @@ view model =
                 [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
                 , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
                 ]
+            , IncDec.view model.incdec |> Html.map IncDecMessage
+            , body model
             ]
         ]
 

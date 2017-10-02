@@ -9,19 +9,21 @@ module Pages.Home
         )
 
 import Html exposing (Html, div, text)
+import Time exposing (Time, second)
 
 
 type alias Model =
-    {}
+    { counter : Time }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { counter = 0 }, Cmd.none )
 
 
 type Msg
-    = NoOp
+    = Tick Time
+    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -30,12 +32,17 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
+        Tick newTime ->
+            ( { model | counter = newTime }, Cmd.none )
+
 
 view : Model -> Html Msg
 view model =
-    div [] [ text "HOME: WIP" ]
+    div [] [ text <| "HOME: WIP" ++ toString model ]
 
 
 subscriptions : Sub Msg
 subscriptions =
-    Sub.none
+    Sub.batch
+        [ Time.every second Tick
+        ]

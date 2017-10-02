@@ -2,12 +2,17 @@ module Api exposing (Account, fetch)
 
 import Http
 import Json.Decode as JD
+import Json.Decode.Pipeline exposing (decode, hardcoded, optional, required)
 import Time
 
 
 type alias Account =
     { id : String
     , username : String
+    , title : String
+    , date : Int
+    , skeys : List String
+    , groups : List String
     }
 
 
@@ -38,6 +43,10 @@ fetch accessToken =
 
 decoder : JD.Decoder Account
 decoder =
-    JD.map2 Account
-        (JD.field "id" JD.string)
-        (JD.field "username" JD.string)
+    decode Account
+        |> required "id" JD.string
+        |> required "username" JD.string
+        |> required "title" JD.string
+        |> required "date" JD.int
+        |> required "skeys" (JD.list JD.string)
+        |> required "groups" (JD.list JD.string)
