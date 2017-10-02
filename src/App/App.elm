@@ -1,7 +1,9 @@
 module App exposing (..)
 
-import Html exposing (Html, a, div, h1, text)
-import Html.Attributes exposing (class, href, title)
+import Animation
+import Components.Loader exposing (hideLoader, loader, showLoader)
+import Html exposing (Html, a, button, div, h1, text)
+import Html.Attributes exposing (class, href, title, type_)
 import Html.Events exposing (onClick, onWithOptions)
 import IncDec
 import Json.Decode as Json
@@ -15,6 +17,7 @@ import Return exposing (Return)
 type alias Model =
     { currentPage : PageModel
     , incdec : IncDec.Model
+    , loaderStyle : Animation.State
     }
 
 
@@ -32,6 +35,9 @@ type Msg
     | HomeClicked
     | AccountClicked
     | NavigateTo String
+    | Animate Animation.Msg
+    | StartLoading
+    | StopLoading
 
 
 type PageMsg
@@ -55,6 +61,16 @@ init location =
     loadPage location
         { currentPage = NotFound
         , incdec = incdecModel
+        , loaderStyle =
+            Animation.styleWith
+                (Animation.spring
+                    { stiffness = 70
+                    , damping = 20
+                    }
+                )
+                [ Animation.opacity 0
+                , Animation.display Animation.none
+                ]
         }
         |> Return.command (Cmd.map IncDecMessage incdecCmd)
 
@@ -93,6 +109,19 @@ update msg model =
         AccountClicked ->
             ( model, Cmd.batch [ Navigation.newUrl "/account" ] )
 
+        Animate animMsg ->
+            ( { model
+                | loaderStyle = Animation.update animMsg model.loaderStyle
+              }
+            , Cmd.none
+            )
+
+        StartLoading ->
+            ( { model | loaderStyle = showLoader model.loaderStyle }, Cmd.none )
+
+        StopLoading ->
+            ( { model | loaderStyle = hideLoader model.loaderStyle }, Cmd.none )
+
 
 updateCurrentPage : PageMsg -> PageModel -> ( PageModel, Cmd PageMsg )
 updateCurrentPage msg model =
@@ -121,7 +150,11 @@ loadPage location model =
         mapToCurrentPage pageMsg pageModel =
             Return.mapBoth
                 (PageMsg << pageMsg)
-                (\page -> { model | currentPage = pageModel page })
+                (\page ->
+                    { model
+                        | currentPage = pageModel page
+                    }
+                )
     in
     case Page.parse location of
         Page.Home ->
@@ -152,6 +185,10 @@ view model =
         [ div [ class "container" ]
             [ h1 [] [ text "App component" ]
             , div []
+                [ button [ type_ "button", class "btn btn-primary", onClick StartLoading ] [ text "Simulate start loading" ]
+                , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
+                ]
+            , div []
                 [ link "Домой" HomeClicked
                 , link "Пользователь" AccountClicked
                 ]
@@ -162,6 +199,7 @@ view model =
             , IncDec.view model.incdec |> Html.map IncDecMessage
             , body model
             ]
+        , loader model.loaderStyle
         ]
 
 
@@ -234,6 +272,7 @@ subscriptions model =
     Sub.batch
         [ Sub.map (PageMsg << HomePageMsg) HomePage.subscriptions
         , Sub.map IncDecMessage incdecSubs
+        , Animation.subscription Animate [ model.loaderStyle ]
         ]
 
 

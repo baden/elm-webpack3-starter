@@ -1,0 +1,25 @@
+.loader-container {
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: -50px;
+  background-color: rgba(255, 255, 255, 1.0);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.loader {
+	/*margin: 0 0;*/
+  /*height: 2em;*/
+  /*width: 2em;*/
+	/*border: 30px solid #00d1b2;*/
+  /*border-left-color: transparent;
+  border-right-color: transparent;*/
+}
