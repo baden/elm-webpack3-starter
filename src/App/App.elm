@@ -83,6 +83,10 @@ init location =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        _ =
+            Debug.log "update" msg
+    in
     case msg of
         NoOp ->
             ( model, Cmd.none )
@@ -184,17 +188,23 @@ view model =
     div [ class "container-overflow-wrap" ]
         [ div [ class "container" ]
             [ h1 [] [ text "App component" ]
-            , div []
-                [ button [ type_ "button", class "btn btn-primary", onClick StartLoading ] [ text "Simulate start loading" ]
-                , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
+            , div [ class "row" ]
+                [ div [ class "col-sm-12" ]
+                    [ button [ type_ "button", class "btn btn-primary", onClick StartLoading ] [ text "Simulate start loading" ]
+                    , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
+                    ]
                 ]
-            , div []
-                [ link "Домой" HomeClicked
-                , link "Пользователь" AccountClicked
+            , div [ class "row row-backbordered" ]
+                [ div [ class "col-sm-12" ]
+                    [ link "Домой" HomeClicked
+                    , link "Пользователь" AccountClicked
+                    ]
                 ]
-            , div []
-                [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
-                , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
+            , div [ class "row" ]
+                [ div [ class "col-sm-12" ]
+                    [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
+                    , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
+                    ]
                 ]
             , IncDec.view model.incdec |> Html.map IncDecMessage
             , body model

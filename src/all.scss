@@ -21,4 +21,19 @@
   background-color: green;
 }
 
+.row-bordered, .row-backbordered {
+    position: relative;
+}
+
+.row-backbordered:before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 45%;
+    left: -1000px;
+    right: -1000px;
+    height: 1px;
+    background-color: #dcdfe4;
+}
+
 @import "App/Components/Loader";
