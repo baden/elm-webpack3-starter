@@ -9,30 +9,20 @@ import IncDec
 import Json.Decode as Json
 import Navigation
 import Page
-import Pages.Account as AccountPage
-import Pages.Home as HomePage
-import Pages.Login as LoginPage
 import Return exposing (Return)
 
 
 type alias Model =
-    { currentPage : PageModel
+    { currentPage : Page.PageModel
     , incdec : IncDec.Model
     , loaderStyle : Animation.State
     }
 
 
-type PageModel
-    = HomePage HomePage.Model
-    | AccountPage AccountPage.Model
-    | LoginPage LoginPage.Model
-    | NotFound
-
-
 type Msg
     = NoOp
     | UrlChange Navigation.Location
-    | PageMsg PageMsg
+    | PageMsg Page.PageMsg
     | IncDecMessage IncDec.Msg
       -- | HomeClicked
       -- | AccountClicked
@@ -40,12 +30,6 @@ type Msg
     | Animate Animation.Msg
     | StartLoading
     | StopLoading
-
-
-type PageMsg
-    = HomePageMsg HomePage.Msg
-    | AccountPageMsg AccountPage.Msg
-    | LoginPageMsg LoginPage.Msg
 
 
 
@@ -60,9 +44,12 @@ init location =
     let
         ( incdecModel, incdecCmd ) =
             IncDec.init
-    in
-        loadPage location
-            { currentPage = NotFound
+
+        ( pageModel, pageCmd ) =
+            Page.init location PageMsg
+
+        initModel =
+            { currentPage = pageModel
             , incdec = incdecModel
             , loaderStyle =
                 Animation.styleWith
@@ -75,6 +62,8 @@ init location =
                     , Animation.display Animation.none
                     ]
             }
+    in
+        ( initModel, pageCmd )
             |> Return.command (Cmd.map IncDecMessage incdecCmd)
 
 
@@ -95,10 +84,14 @@ update msg model =
                 ( model, Cmd.none )
 
             UrlChange location ->
-                loadPage location model
+                let
+                    ( pageModel, pageCmd ) =
+                        Page.init location PageMsg
+                in
+                    ( { model | currentPage = pageModel }, pageCmd )
 
             PageMsg pageMsg ->
-                updateCurrentPage pageMsg model.currentPage
+                Page.update pageMsg model.currentPage
                     |> Return.mapBoth PageMsg (\page -> { model | currentPage = page })
 
             IncDecMessage subMsg ->
@@ -127,70 +120,6 @@ update msg model =
 
             StopLoading ->
                 ( { model | loaderStyle = hideLoader model.loaderStyle }, Cmd.none )
-
-
-updateCurrentPage : PageMsg -> PageModel -> ( PageModel, Cmd PageMsg )
-updateCurrentPage msg model =
-    case ( msg, model ) of
-        ( HomePageMsg msg, HomePage page ) ->
-            HomePage.update msg page
-                |> Return.mapBoth HomePageMsg HomePage
-
-        ( AccountPageMsg msg, AccountPage page ) ->
-            AccountPage.update msg page
-                |> Return.mapBoth AccountPageMsg AccountPage
-
-        ( LoginPageMsg msg, LoginPage page ) ->
-            LoginPage.update msg page
-                |> Return.mapBoth LoginPageMsg LoginPage
-
-        _ ->
-            let
-                _ =
-                    Debug.log "received unexpected message" msg
-            in
-                Return.singleton model
-
-
-loadPage : Navigation.Location -> Model -> ( Model, Cmd Msg )
-loadPage location model =
-    let
-        -- pageView =
-        --     Analytics.pageView location.pathname
-        mapToCurrentPage pageMsg pageModel =
-            Return.mapBoth
-                (PageMsg << pageMsg)
-                (\page ->
-                    { model
-                        | currentPage = pageModel page
-                    }
-                )
-    in
-        case Page.parse location of
-            Page.Home ->
-                HomePage.init
-                    |> mapToCurrentPage HomePageMsg HomePage
-
-            -- |> Return.command pageView
-            Page.Account ->
-                AccountPage.init
-                    |> mapToCurrentPage AccountPageMsg AccountPage
-
-            Page.Login ->
-                LoginPage.init
-                    |> mapToCurrentPage LoginPageMsg LoginPage
-
-            -- |> Return.effect_ fetchNewsletterFiles
-            -- |> Return.command pageView
-            --
-            -- Page.System name ->
-            --     SystemPage.init name
-            --         |> mapToCurrentPage NewsletterMsg NewsletterPage
-            --         |> Return.andThen (fetchNewsletter name)
-            --         |> Return.effect_ fetchNewsletterFiles
-            --         |> Return.command pageView
-            Page.NotFound ->
-                ( model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -226,7 +155,7 @@ view model =
                     [ IncDec.view model.incdec |> Html.map IncDecMessage
                     ]
                 ]
-            , body model
+            , Page.view model.currentPage PageMsg
             ]
         , loader model.loaderStyle
         ]
@@ -251,40 +180,6 @@ clickTo path =
     ]
 
 
-body : Model -> Html Msg
-body model =
-    case model.currentPage of
-        HomePage page ->
-            HomePage.view page
-                |> Html.map (PageMsg << HomePageMsg)
-
-        AccountPage page ->
-            AccountPage.view page
-                |> Html.map (PageMsg << AccountPageMsg)
-
-        LoginPage page ->
-            LoginPage.view page
-                |> Html.map (PageMsg << LoginPageMsg)
-
-        -- NewslettersPage page ->
-        --     NewslettersPage.view model.newsletterFiles page
-        --         |> Html.map (PageMsg << NewslettersMsg)
-        --
-        -- NewsletterPage page ->
-        --     NewsletterPage.view
-        --         { screenWidth = model.width
-        --         , files = (FetchData.default [] model.newsletterFiles)
-        --         , newsletter =
-        --             Dict.get page.filename model.newsletters
-        --                 |> Maybe.withDefault FetchData.NotStarted
-        --         }
-        --         page
-        --         |> Html.map (PageMsg << NewsletterMsg)
-        NotFound ->
-            div [ class "not__found" ]
-                [ text "Page Not Found" ]
-
-
 link : String -> msg -> Html msg
 link label msg =
     div
@@ -301,23 +196,9 @@ subscriptions model =
     let
         incdecSubs =
             IncDec.subscriptions model.incdec
-
-        pageSubs =
-            case model.currentPage of
-                HomePage page ->
-                    Sub.map (PageMsg << HomePageMsg) (HomePage.subscriptions page)
-
-                AccountPage page ->
-                    Sub.map (PageMsg << AccountPageMsg) (AccountPage.subscriptions page)
-
-                LoginPage page ->
-                    Sub.map (PageMsg << LoginPageMsg) (LoginPage.subscriptions page)
-
-                NotFound ->
-                    Sub.none
     in
         Sub.batch
-            [ pageSubs
+            [ Page.pageSubs model.currentPage PageMsg
             , Sub.map IncDecMessage incdecSubs
             , Animation.subscription Animate [ model.loaderStyle ]
             ]
