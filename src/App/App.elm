@@ -10,6 +10,8 @@ import Json.Decode as Json
 import Navigation
 import Page
 import Return exposing (Return)
+import Monocle.Lens exposing (Lens)
+import Return.Optics exposing (refractl)
 
 
 type alias Model =
@@ -17,6 +19,21 @@ type alias Model =
     , incdec : IncDec.Model
     , loaderStyle : Animation.State
     }
+
+
+pagel : Lens Model Page.Model
+pagel =
+    Lens .page <| \u m -> { m | page = u }
+
+
+incdecl : Lens Model IncDec.Model
+incdecl =
+    Lens .incdec <| \u m -> { m | incdec = u }
+
+
+loaderStylel : Lens Model Animation.State
+loaderStylel =
+    Lens .loaderStyle <| \u m -> { m | loaderStyle = u }
 
 
 type Msg
@@ -78,51 +95,45 @@ init location =
 
 
 update : Msg -> Model -> Return Msg Model
-update msg model =
+update msg =
     let
         _ =
             Debug.log "update" msg
     in
-        case msg of
-            NoOp ->
-                Return.singleton model
+        Return.singleton
+            >> case msg of
+                NoOp ->
+                    Return.zero
 
-            UrlChange location ->
-                Page.init location
-                    |> Return.mapBoth PageMsg (\page -> { model | page = page })
+                UrlChange location ->
+                    refractl pagel PageMsg <| always (Page.init location)
 
-            -- (\pageModel -> { model | page = pageModel })
-            PageMsg pageMsg ->
-                Page.update pageMsg model.page
-                    |> Return.mapBoth PageMsg (\page -> { model | page = page })
+                PageMsg pageMsg ->
+                    refractl pagel PageMsg <| Page.update pageMsg
 
-            IncDecMessage subMsg ->
-                IncDec.update subMsg model.incdec
-                    |> Return.mapBoth IncDecMessage
-                        (\m -> { model | incdec = m })
+                IncDecMessage subMsg ->
+                    refractl incdecl IncDecMessage <| IncDec.update subMsg
 
-            NavigateTo pathname ->
-                -- Return.singleton model
-                --     |> Return.command (Navigation.newUrl pathname)
-                Return.return model (Navigation.newUrl pathname)
+                NavigateTo pathname ->
+                    Return.command <| Navigation.newUrl pathname
 
-            -- ( model, Cmd.batch [ Navigation.newUrl pathname ] )
-            -- HomeClicked ->
-            --     ( model, Cmd.batch [ Navigation.newUrl "/" ] )
-            --
-            -- AccountClicked ->
-            --     ( model, Cmd.batch [ Navigation.newUrl "/account" ] )
-            Animate animMsg ->
-                Return.singleton
-                    { model | loaderStyle = Animation.update animMsg model.loaderStyle }
+                Animate animMsg ->
+                    Return.map
+                        (\m ->
+                            { m | loaderStyle = Animation.update animMsg m.loaderStyle }
+                        )
 
-            StartLoading ->
-                Return.singleton
-                    { model | loaderStyle = showLoader model.loaderStyle }
+                StartLoading ->
+                    Return.map
+                        (\m ->
+                            { m | loaderStyle = showLoader m.loaderStyle }
+                        )
 
-            StopLoading ->
-                Return.singleton
-                    { model | loaderStyle = hideLoader model.loaderStyle }
+                StopLoading ->
+                    Return.map
+                        (\m ->
+                            { m | loaderStyle = hideLoader m.loaderStyle }
+                        )
 
 
 view : Model -> Html Msg
