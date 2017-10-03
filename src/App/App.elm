@@ -134,6 +134,7 @@ view model =
                     [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
                     , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
                     , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
+                    , linkTo "/map" [ class "btn btn-primary" ] [ text "Карта" ]
                     ]
                 ]
             , Page.view model.page |> Html.map PageMsg

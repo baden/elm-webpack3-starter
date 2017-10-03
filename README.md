@@ -32,12 +32,14 @@ npm run build
 * https://github.com/debois/awesome-elm
 * https://terezka.github.io/elm-plot/
 * https://github.com/Skinney/elm-array-exploration
+* https://mbylstra.github.io/html-to-elm/
 
 ## Libraries
 
 * http://package.elm-lang.org/packages/rluiten/elm-date-extra/latest
 * https://github.com/arturopala/elm-monocle
 * https://github.com/klaftertief/slippery-slope
+* http://package.elm-lang.org/packages/debois/elm-mdl/latest
 
 ## Useless links (Just kidding)
 

@@ -16,6 +16,7 @@ import UrlParser exposing (..)
 import Pages.Account as AccountPage
 import Pages.Home as HomePage
 import Pages.Login as LoginPage
+import Pages.Map as MapPage
 import Return exposing (Return)
 
 
@@ -23,6 +24,7 @@ type Page
     = Home
     | Account
     | Login
+    | Map
       -- | System String
     | NotFound
 
@@ -31,6 +33,7 @@ type Model
     = HomePage HomePage.Model
     | AccountPage AccountPage.Model
     | LoginPage LoginPage.Model
+    | MapPage MapPage.Model
     | NotFoundPage
 
 
@@ -38,6 +41,7 @@ type Msg
     = HomePageMsg HomePage.Msg
     | AccountPageMsg AccountPage.Msg
     | LoginPageMsg LoginPage.Msg
+    | MapPageMsg MapPage.Msg
 
 
 parse : Navigation.Location -> Page
@@ -51,6 +55,7 @@ pageParser =
     oneOf
         [ map Account (s "account")
         , map Login (s "login")
+        , map Map (s "map")
         , map Home (s "")
           -- , map System (s "system" </> string)
         ]
@@ -82,6 +87,10 @@ init location =
                 LoginPage.init
                     |> mapToCurrentPage LoginPageMsg LoginPage
 
+            Map ->
+                MapPage.init
+                    |> mapToCurrentPage MapPageMsg MapPage
+
             -- |> Return.effect_ fetchNewsletterFiles
             -- |> Return.command pageView
             --
@@ -110,6 +119,10 @@ update msg model =
             LoginPage.update msg page
                 |> Return.mapBoth LoginPageMsg LoginPage
 
+        ( MapPageMsg msg, MapPage page ) ->
+            MapPage.update msg page
+                |> Return.mapBoth MapPageMsg MapPage
+
         _ ->
             let
                 _ =
@@ -132,6 +145,10 @@ view model =
         LoginPage page ->
             LoginPage.view page
                 |> Html.map LoginPageMsg
+
+        MapPage page ->
+            MapPage.view page
+                |> Html.map MapPageMsg
 
         -- NewslettersPage page ->
         --     NewslettersPage.view model.newsletterFiles page
@@ -156,16 +173,16 @@ pageSubs : Model -> Sub Msg
 pageSubs model =
     case model of
         HomePage page ->
-            HomePage.subscriptions page
-                |> Sub.map HomePageMsg
+            HomePage.subscriptions page |> Sub.map HomePageMsg
 
         AccountPage page ->
-            AccountPage.subscriptions page
-                |> Sub.map AccountPageMsg
+            AccountPage.subscriptions page |> Sub.map AccountPageMsg
 
         LoginPage page ->
-            LoginPage.subscriptions page
-                |> Sub.map LoginPageMsg
+            LoginPage.subscriptions page |> Sub.map LoginPageMsg
+
+        MapPage page ->
+            MapPage.subscriptions page |> Sub.map MapPageMsg
 
         NotFoundPage ->
             Sub.none
