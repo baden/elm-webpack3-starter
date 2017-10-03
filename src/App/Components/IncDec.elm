@@ -1,4 +1,4 @@
-module IncDec exposing (Model, Msg, init, subscriptions, update, view)
+module Components.IncDec exposing (Model, Msg, init, subscriptions, update, view)
 
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, type_)
@@ -67,5 +67,5 @@ view model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+subscriptions =
+    always Sub.none

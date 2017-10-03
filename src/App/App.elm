@@ -5,7 +5,6 @@ import Components.Loader exposing (hideLoader, loader, showLoader)
 import Html exposing (Html, a, button, div, h1, text)
 import Html.Attributes exposing (class, href, title, type_)
 import Html.Events exposing (onClick, onWithOptions)
-import IncDec
 import Json.Decode as Json
 import Navigation
 import Page
@@ -16,7 +15,6 @@ import Return.Optics exposing (refractl)
 
 type alias Model =
     { page : Page.Model
-    , incdec : IncDec.Model
     , loaderStyle : Animation.State
     }
 
@@ -24,11 +22,6 @@ type alias Model =
 pagel : Lens Model Page.Model
 pagel =
     Lens .page <| \u m -> { m | page = u }
-
-
-incdecl : Lens Model IncDec.Model
-incdecl =
-    Lens .incdec <| \u m -> { m | incdec = u }
 
 
 loaderStylel : Lens Model Animation.State
@@ -40,7 +33,6 @@ type Msg
     = NoOp
     | UrlChange Navigation.Location
     | PageMsg Page.Msg
-    | IncDecMessage IncDec.Msg
       -- | HomeClicked
       -- | AccountClicked
     | NavigateTo String
@@ -60,17 +52,12 @@ type Msg
 init : Navigation.Location -> Return Msg Model
 init location =
     let
-        ( incdecModel, incdecCmd ) =
-            IncDec.init
-                |> Return.mapCmd IncDecMessage
-
         ( pageModel, pageCmd ) =
             Page.init location
                 |> Return.mapCmd PageMsg
 
         initModel =
             { page = pageModel
-            , incdec = incdecModel
             , loaderStyle =
                 Animation.styleWith
                     (Animation.spring
@@ -85,7 +72,6 @@ init location =
     in
         Return.singleton initModel
             |> Return.command pageCmd
-            |> Return.command incdecCmd
 
 
 
@@ -110,9 +96,6 @@ update msg =
 
                 PageMsg pageMsg ->
                     refractl pagel PageMsg <| Page.update pageMsg
-
-                IncDecMessage subMsg ->
-                    refractl incdecl IncDecMessage <| IncDec.update subMsg
 
                 NavigateTo pathname ->
                     Return.command <| Navigation.newUrl pathname
@@ -151,15 +134,6 @@ view model =
                     [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
                     , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
                     , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
-                    ]
-                ]
-            , div [ class "row" ]
-                [ div [ class "col-sm-6" ]
-                    [ IncDec.view model.incdec |> Html.map IncDecMessage
-                    ]
-                , div
-                    [ class "col-sm-6" ]
-                    [ IncDec.view model.incdec |> Html.map IncDecMessage
                     ]
                 ]
             , Page.view model.page |> Html.map PageMsg
@@ -203,8 +177,6 @@ subscriptions model =
     Sub.batch
         [ Page.pageSubs model.page
             |> Sub.map PageMsg
-        , IncDec.subscriptions model.incdec
-            |> Sub.map IncDecMessage
         , Animation.subscription Animate [ model.loaderStyle ]
         ]
 

@@ -37,6 +37,7 @@ npm run build
 
 * http://package.elm-lang.org/packages/rluiten/elm-date-extra/latest
 * https://github.com/arturopala/elm-monocle
+* https://github.com/klaftertief/slippery-slope
 
 ## Useless links (Just kidding)
 
