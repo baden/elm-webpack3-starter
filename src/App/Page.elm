@@ -1,8 +1,8 @@
 module Page
     exposing
         ( Page(..)
-        , PageMsg
-        , PageModel
+        , Msg
+        , Model
         , pageSubs
         , init
         , update
@@ -27,14 +27,14 @@ type Page
     | NotFound
 
 
-type PageModel
+type Model
     = HomePage HomePage.Model
     | AccountPage AccountPage.Model
     | LoginPage LoginPage.Model
     | NotFoundPage
 
 
-type PageMsg
+type Msg
     = HomePageMsg HomePage.Msg
     | AccountPageMsg AccountPage.Msg
     | LoginPageMsg LoginPage.Msg
@@ -56,14 +56,14 @@ pageParser =
         ]
 
 
-init : Navigation.Location -> (PageMsg -> msg) -> ( PageModel, Cmd msg )
-init location parentMsg =
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
     let
         -- pageView =
         --     Analytics.pageView location.pathname
         mapToCurrentPage pageMsg pageModel =
             Return.mapBoth
-                (parentMsg << pageMsg)
+                pageMsg
                 (\page ->
                     pageModel page
                 )
@@ -95,7 +95,7 @@ init location parentMsg =
                 ( NotFoundPage, Cmd.none )
 
 
-update : PageMsg -> PageModel -> ( PageModel, Cmd PageMsg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model ) of
         ( HomePageMsg msg, HomePage page ) ->
@@ -118,20 +118,20 @@ update msg model =
                 Return.singleton model
 
 
-view : PageModel -> (PageMsg -> msg) -> Html msg
-view model pageMsg =
+view : Model -> Html Msg
+view model =
     case model of
         HomePage page ->
             HomePage.view page
-                |> Html.map (pageMsg << HomePageMsg)
+                |> Html.map HomePageMsg
 
         AccountPage page ->
             AccountPage.view page
-                |> Html.map (pageMsg << AccountPageMsg)
+                |> Html.map AccountPageMsg
 
         LoginPage page ->
             LoginPage.view page
-                |> Html.map (pageMsg << LoginPageMsg)
+                |> Html.map LoginPageMsg
 
         -- NewslettersPage page ->
         --     NewslettersPage.view model.newsletterFiles page
@@ -152,16 +152,20 @@ view model pageMsg =
                 [ text "Page Not Found" ]
 
 
-pageSubs currentPage pageMsg =
-    case currentPage of
+pageSubs : Model -> Sub Msg
+pageSubs model =
+    case model of
         HomePage page ->
-            Sub.map (pageMsg << HomePageMsg) (HomePage.subscriptions page)
+            HomePage.subscriptions page
+                |> Sub.map HomePageMsg
 
         AccountPage page ->
-            Sub.map (pageMsg << AccountPageMsg) (AccountPage.subscriptions page)
+            AccountPage.subscriptions page
+                |> Sub.map AccountPageMsg
 
         LoginPage page ->
-            Sub.map (pageMsg << LoginPageMsg) (LoginPage.subscriptions page)
+            LoginPage.subscriptions page
+                |> Sub.map LoginPageMsg
 
         NotFoundPage ->
             Sub.none

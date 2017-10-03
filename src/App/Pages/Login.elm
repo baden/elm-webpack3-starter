@@ -83,5 +83,5 @@ ariaDescribedby =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
+subscriptions =
+    always Sub.none

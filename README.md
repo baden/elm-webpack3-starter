@@ -52,5 +52,6 @@ npm run build
 
 ## TODO
 
+* More functional-style https://github.com/CaronaBoard/caronaboard
 * Use css3 animation events (webkitAnimationEnd, animationend, transitionend)
 (https://github.com/xarvh/elm-dropdown-menu/blob/2098e208c20afdaaa3391bbaf7b1df7d07770d05/src/DropdownMenu.elm)
