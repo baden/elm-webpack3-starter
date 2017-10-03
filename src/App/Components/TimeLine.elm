@@ -78,13 +78,13 @@ content model =
             [ top model
             , event model
             , event2 model
-            , event3 model
+            , event3 model True
             , event4 model
-            , event3 model
+            , event3 model False
             , event4 model
-            , event3 model
+            , event3 model False
             , event4 model
-            , event3 model
+            , event3 model False
             , event4 model
             , eventL model
             ]
@@ -248,14 +248,14 @@ event2 model =
                                     [ div [ class "edit-dialog-select moment-edit-control timeline-item-title-content", attribute "data-activity" "29", attribute "data-distance" "36746", attribute "jsaction" "jsl._", attribute "jsan" "7.edit-dialog-select,7.moment-edit-control,7.timeline-item-title-content,0.data-activity,0.data-distance,0.vet,0.role,0.tabindex,22.jsaction,t-cnaaX15qjc8", attribute "jstcache" "1261", attribute "role" "button", attribute "tabindex" "0", attribute "vet" "6495" ]
                                         [ div [ class "activity-icon", attribute "jstcache" "1268", attribute "style" "background-image:url(https://www.gstatic.com/images/icons/material/system/2x/directions_car_black_24dp.png)" ]
                                             []
-                                        , span [ class "activity-type", attribute "jsan" "7.activity-type", attribute "jstcache" "1269" ]
+                                        , span [ class "activity-type" ]
                                             [ text "На автомобиле" ]
-                                        , div [ class " distance-text", attribute "jsan" "7.distance-text", attribute "jstcache" "1270", attribute "style" "" ]
+                                        , div [ class "distance-text", attribute "style" "" ]
                                             [ text "- 36,7 км" ]
                                         ]
-                                    , div [ attribute "jstcache" "1262", attribute "style" "display:none" ]
+                                    , div [  attribute "style" "display:none" ]
                                         []
-                                    , div [ class "duration-text", attribute "jsaction" "jsl._", attribute "jsan" "t-RStIBSeQF44,7.duration-text,0.vet,0.role,0.tabindex,22.jsaction", attribute "jstcache" "1263", attribute "role" "button", attribute "tabindex" "0", attribute "vet" "6498" ]
+                                    , div [ class "duration-text", attribute "role" "button", attribute "tabindex" "0" ]
                                         [ text "1 час 2 минуты" ]
                                     , div [ attribute "jstcache" "1264" ]
                                         [ i [ attribute "aria-label" "Привязать к дороге", class " sp-icon material-icons-extended", attribute "data-segment-key" "29:1441872131444:1441875878265", attribute "data-tooltip" "Привязать к дороге", attribute "jsaction" "activity-segment-tooltip.sp-icon-click", attribute "jsan" "7.sp-icon,7.material-icons-extended,0.data-segment-key,0.vet,0.aria-label,0.data-tooltip,0.role,0.tabindex,22.jsaction", attribute "jstcache" "1277", attribute "role" "button", attribute "style" "", attribute "tabindex" "0", attribute "vet" "21780" ]
@@ -283,11 +283,13 @@ event2 model =
         ]
     ]
 
+b_class l =
+    if l then " low-confidence" else ""
 
-event3 : Model -> Html Msg
-event3 model =
+event3 : Model -> Bool -> Html Msg
+event3 model l =
     div [ attribute "jsinstance" "3", attribute "jstcache" "1130", attribute "style" "" ]
-    [ div [ class "timeline-item place-history-moment-outer", attribute "jsaction" "mouseover:jsl._;mouseout:jsl._", attribute "jsan" "t-cqIlb7MOmE0,7.timeline-item,7.place-history-moment-outer,0.ved,22.jsaction", attribute "jstcache" "1162", attribute "ved" "0ahUKEwiS5ebWpNXWAhWCFZoKHRCWCrAQyzIIPCgC" ]
+    [ div [ class <| "timeline-item place-history-moment-outer" ++ (b_class l), attribute "jsaction" "mouseover:jsl._;mouseout:jsl._", attribute "jsan" "t-cqIlb7MOmE0,7.timeline-item,7.place-history-moment-outer,0.ved,22.jsaction", attribute "jstcache" "1162", attribute "ved" "0ahUKEwiS5ebWpNXWAhWCFZoKHRCWCrAQyzIIPCgC" ]
         [ svg [ S.class "timeline-item-svg" ]
             [ line [ S.class "timeline-item-svg-line", attribute "jsan" "7.timeline-item-svg-line,4.style,0.stroke-linecap,0.x1,0.x2,0.y1,0.y2", attribute "jstcache" "1165", attribute "stroke-linecap" "round", attribute "style" "stroke: rgb(1, 87, 155);", attribute "x1" "7", attribute "x2" "7", attribute "y1" "0", attribute "y2" "41" ]
                 []
@@ -356,7 +358,7 @@ event3 model =
                 []
             , div [ attribute "jstcache" "1175", attribute "style" "display:none" ]
                 []
-            , div [ attribute "jstcache" "1176", attribute "style" "display:none" ]
+            , div [ class "confirm-place-visit-button material-raised-button material-raised-button-default", attribute "jsaction" "jsl._", attribute "style" (if l then "" else "display:none"), attribute "role" "button", attribute "tabindex" "0" ]
                 [ text "Подтвердить" ]
             ]
         , hr [ class "moment-divider" ]
@@ -415,43 +417,43 @@ eventL model =
     div [ attribute "jsinstance" "*7", attribute "jstcache" "1130", attribute "style" "" ]
     [ div [ class "timeline-item place-history-moment-outer", attribute "jsaction" "mouseover:jsl._;mouseout:jsl._", attribute "jsan" "t-cqIlb7MOmE0,7.timeline-item,7.place-history-moment-outer,0.ved,22.jsaction", attribute "jstcache" "1162", attribute "ved" "0ahUKEwiS5ebWpNXWAhWCFZoKHRCWCrAQxzIIVigG" ]
         [ svg [ S.class "timeline-item-svg" ]
-            [ line [ S.class "timeline-item-svg-line", attribute "jsan" "7.timeline-item-svg-line,4.style,0.stroke-linecap,0.x1,0.x2,0.y1,0.y2", attribute "jstcache" "1165", attribute "stroke-linecap" "round", attribute "style" "stroke:#01579B", attribute "x1" "7", attribute "x2" "7", attribute "y1" "0", attribute "y2" "41" ]
+            [ line [ S.class "timeline-item-svg-line", attribute "stroke-linecap" "round", attribute "style" "stroke:#01579B", attribute "x1" "7", attribute "x2" "7", attribute "y1" "0", attribute "y2" "41" ]
                 []
-            , line [ S.class "timeline-item-svg-line", attribute "jsan" "7.timeline-item-svg-line,0.stroke-linecap,0.x1,0.x2,0.y1,0.y2", attribute "jstcache" "1166", attribute "stroke-linecap" "round", attribute "style" "display:none", attribute "x1" "7", attribute "x2" "7", attribute "y1" "41", attribute "y2" "100%" ]
+            , line [ S.class "timeline-item-svg-line", attribute "stroke-linecap" "round", attribute "style" "display:none", attribute "x1" "7", attribute "x2" "7", attribute "y1" "41", attribute "y2" "100%" ]
                 []
             ]
         , div [ class "segment-divider" ]
             []
-        , div [ class "timeline-item-icon place-icon", attribute "jsaction" "jsl._", attribute "jsan" "t-611xI8HyBqk,7.timeline-item-icon,7.place-icon,5.background-image,22.jsaction", attribute "jstcache" "1167", attribute "style" "background-image:url(https://maps.gstatic.com/mapsactivities/icons/poi_icons/30_visited/home_2x.png)" ]
+        , div [ class "timeline-item-icon place-icon", attribute "style" "background-image:url(https://maps.gstatic.com/mapsactivities/icons/poi_icons/30_visited/home_2x.png)" ]
             []
-        , i [ attribute "jstcache" "1168", attribute "style" "display:none" ]
+        , i [ attribute "style" "display:none" ]
             [ text "help" ]
-        , div [ class "place-history-moment-content timeline-item-content primary multi-line", attribute "jstcache" "1169" ]
+        , div [ class "place-history-moment-content timeline-item-content primary multi-line" ]
             [ div [ class "timeline-item-title", attribute "jstcache" "1170" ]
-                [ div [ class "edit-dialog-select moment-edit-control place-visit timeline-item-title-content", attribute "jsaction" "jsl._", attribute "jsan" "7.edit-dialog-select,7.moment-edit-control,7.place-visit,7.timeline-item-title-content,0.vet,0.role,0.tabindex,22.jsaction,t-evQS7_FO6FI", attribute "jstcache" "1200", attribute "role" "button", attribute "tabindex" "0", attribute "vet" "6495" ]
-                    [ div [ attribute "jstcache" "1209", attribute "style" "display:none" ]
+                [ div [ class "edit-dialog-select moment-edit-control place-visit timeline-item-title-content", attribute "role" "button", attribute "tabindex" "0", attribute "vet" "6495" ]
+                    [ div [ attribute "style" "display:none" ]
                         []
-                    , div [ class "place-visit-title", attribute "jsan" "7.place-visit-title", attribute "jstcache" "1210" ]
+                    , div [ class "place-visit-title" ]
                         [ text "Дом" ]
                     , i [ class "material-icons-extended drop-down" ]
                         [ text "arrow_drop_down" ]
                     ]
-                , div [ attribute "jstcache" "1201", attribute "style" "display:none" ]
+                , div [ attribute "style" "display:none" ]
                     []
-                , div [ attribute "jstcache" "1202", attribute "style" "display:none" ]
+                , div [ attribute "style" "display:none" ]
                     [ text "Missing visit in" ]
-                , div [ attribute "jstcache" "1203", attribute "style" "display:none" ]
+                , div [ attribute "style" "display:none" ]
                     []
-                , i [ attribute "jstcache" "1204", attribute "style" "display:none" ]
+                , i [ attribute "style" "display:none" ]
                     [ text "check_circle" ]
                 , div [ class "duration-text", attribute "jsaction" "jsl._", attribute "jsan" "7.duration-text,0.role,0.tabindex,0.vet,22.jsaction,t-qqFDORzJIs4", attribute "jstcache" "1205", attribute "role" "button", attribute "tabindex" "0", attribute "vet" "6498" ]
                     [ span [ attribute "jstcache" "1213", attribute "style" "display:none" ]
                         []
-                    , span [ class "segment-duration-part", attribute "jsan" "7.segment-duration-part", attribute "jstcache" "1214" ]
+                    , span [ class "segment-duration-part" ]
                         [ text "16:56" ]
-                    , span [ attribute "jstcache" "1215", attribute "style" "display:none" ]
+                    , span [ attribute "style" "display:none" ]
                         []
-                    , span [ attribute "jstcache" "1216", attribute "style" "display:none" ]
+                    , span [ attribute "style" "display:none" ]
                         []
                     ]
                 , div [ attribute "aria-expanded" "false", attribute "aria-haspopup" "true", attribute "aria-label" "Параметры", class "place-visit-overflow-menu-button material-icons-extended material-icon-with-ripple goog-inline-block goog-menu-button", attribute "jsan" "7.place-visit-overflow-menu-button,7.material-icons-extended,7.material-icon-with-ripple,0.ved,0.aria-label,0.role", attribute "jstcache" "1206", attribute "role" "button", attribute "style" "user-select: none;", attribute "tabindex" "0", attribute "ved" "4958" ]
@@ -465,25 +467,26 @@ eventL model =
                         ]
                     ]
                 ]
-            , div [ class "timeline-item-text", attribute "jsan" "7.timeline-item-text", attribute "jstcache" "1171" ]
+            , div [ class "timeline-item-text" ]
                 [ text "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" ]
-            , div [ attribute "jstcache" "1172", attribute "style" "display:none" ]
+            , div [ attribute "style" "display:none" ]
                 []
             ]
-        , div [ attribute "jstcache" "1173", attribute "style" "display:none" ]
+        , div [ attribute "style" "display:none" ]
             []
         , div [ class "place-history-moment-content timeline-item-content primary" ]
-            [ div [ class "photo-grid-wrapper", attribute "jstcache" "1174", attribute "style" "display:none" ]
+            [ div [ class "photo-grid-wrapper", attribute "style" "display:none" ]
                 []
-            , div [ attribute "jstcache" "1175", attribute "style" "display:none" ]
+            , div [ attribute "style" "display:none" ]
                 []
-            , div [ attribute "jstcache" "1176", attribute "style" "display:none" ]
+
+            , div [ class "confirm-place-visit-button material-raised-button material-raised-button-default", attribute "jsaction" "jsl._", attribute "jsan" "7.confirm-place-visit-button,7.material-raised-button,7.material-raised-button-default,0.vet,0.role,0.tabindex,22.jsaction", attribute "jstcache" "1176", attribute "role" "button", attribute "tabindex" "0", attribute "style" "display:none" ]
                 [ text "Подтвердить" ]
             ]
         , hr [ class "moment-divider" ]
             []
         ]
-    , div [ attribute "jstcache" "1163", attribute "style" "display:none" ]
+    , div [ attribute "style" "display:none" ]
         []
     ]
 

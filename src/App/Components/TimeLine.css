@@ -50,7 +50,7 @@
 }
 
 .material-icons-extended {
-    font-family: 'Material Icons';
+    font-family: 'Material Icons Extended';
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
@@ -538,4 +538,92 @@
 
 .place-history-moment-outer .edit-dialog-select .drop-down {
     margin-left: auto;
+}
+
+.material-icon-with-ripple:active:before, .material-icon-with-ripple:focus:before {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
+
+.confirm-place-visit-button.material-raised-button-default {
+    background-color: #eeeeee;
+    border-radius: 2px;
+    border-style: none;
+    box-shadow: none;
+    color: #4285f4;
+    font-size: 14px;
+    margin: 4px -8px;
+    padding: 0 16px;
+}
+.material-raised-button-default {
+    background-color: #4285f4;
+    color: #fff;
+}
+.material-raised-button {
+    outline: none;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 2px;
+    color: rgba(0,0,0,0.87);
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: auto;
+    line-height: 36px;
+    margin: 0;
+    min-height: 36px;
+    min-width: 0;
+    outline: none;
+    padding: 0 16px;
+    text-transform: uppercase;
+    -webkit-transition: all .218s cubic-bezier(0.4,0.0,0.2,1);
+    -moz-transition: all .218s cubic-bezier(0.4,0.0,0.2,1);
+    -o-transition: all .218s cubic-bezier(0.4,0.0,0.2,1);
+    transition: all .218s cubic-bezier(0.4,0.0,0.2,1);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 1px 5px rgba(0,0,0,.24);
+}
+
+.material-raised-button-default:hover {
+    background-color: #3b78e7;
+}
+.material-raised-button:hover {
+    background-color: #eeeeee;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 3px 6px rgba(0,0,0,.26);
+}
+.confirm-place-visit-button.material-raised-button-default:hover {
+    background-color: #e0e0e0;
+}
+
+.timeline-item.low-confidence::before {
+    background-color: #eeeeee;
+    border-radius: 2px;
+    content: '';
+    height: calc(100% - 16px);
+    left: 8px;
+    position: absolute;
+    top: 8px;
+    width: calc(100% - 16px);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 1px 5px rgba(0,0,0,.24);
+}
+
+.material-icons-extended.sp-icon {
+    border-radius: 50%;
+    color: rgba(0,0,0,0.54);
+    cursor: pointer;
+    font-size: 18px;
+    height: 24px;
+    line-height: 24px;
+    outline: none;
+    text-align: center;
+    width: 24px;
+}
+
+.material-icons-extended.sp-icon:hover, .material-icons-extended.sp-icon.active {
+    background-color: rgba(0,0,0,0.54);
+    color: white;
 }
