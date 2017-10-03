@@ -118,22 +118,15 @@ update msg =
                     Return.command <| Navigation.newUrl pathname
 
                 Animate animMsg ->
-                    Return.map
-                        (\m ->
-                            { m | loaderStyle = Animation.update animMsg m.loaderStyle }
-                        )
+                    Return.map <|
+                        Monocle.Lens.modify loaderStylel <|
+                            Animation.update animMsg
 
                 StartLoading ->
-                    Return.map
-                        (\m ->
-                            { m | loaderStyle = showLoader m.loaderStyle }
-                        )
+                    Return.map <| Monocle.Lens.modify loaderStylel showLoader
 
                 StopLoading ->
-                    Return.map
-                        (\m ->
-                            { m | loaderStyle = hideLoader m.loaderStyle }
-                        )
+                    Return.map <| Monocle.Lens.modify loaderStylel hideLoader
 
 
 view : Model -> Html Msg

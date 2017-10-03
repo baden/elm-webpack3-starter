@@ -4,6 +4,8 @@ import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, type_)
 import Html.Events exposing (onClick)
 import Task
+import Monocle.Lens as Lens exposing (Lens)
+import Return exposing (Return)
 
 
 type alias Model =
@@ -15,6 +17,11 @@ defaultModel : Model
 defaultModel =
     { value = 0
     }
+
+
+value : Lens Model Int
+value =
+    Lens .value <| \u m -> { m | value = u }
 
 
 type Msg
@@ -35,21 +42,18 @@ send msg =
 
 init : ( Model, Cmd Msg )
 init =
-    ( defaultModel
-    , Cmd.batch
-        [ send Increment
-        ]
-    )
+    Return.return defaultModel (send Increment)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        Increment ->
-            ( { model | value = model.value + 1 }, Cmd.none )
+update msg =
+    Return.singleton
+        << case msg of
+            Increment ->
+                Lens.modify value ((+) 1)
 
-        Decrement ->
-            ( { model | value = model.value - 1 }, Cmd.none )
+            Decrement ->
+                Lens.modify value ((+) -1)
 
 
 view : Model -> Html Msg
