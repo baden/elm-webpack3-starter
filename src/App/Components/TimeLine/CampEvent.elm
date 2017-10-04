@@ -6,13 +6,17 @@ import Svg exposing (svg, line)
 import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
 import Components.TimeLine.Event exposing (event_duration)
 
-type alias CampEvent = {
-    }
+
+type alias CampEvent =
+    {}
+
+
 
 -- Public API
 
-campEvent : (Bool, (Bool, Bool), Html msg, String, (String, String), String) -> Html msg
-campEvent (low_confidence, (before, after), place_icon, place, (from, to), address) =
+
+campEvent : ( Bool, ( Bool, Bool ), Html msg, String, ( String, String ), String ) -> Html msg
+campEvent ( low_confidence, ( before, after ), place_icon, place, ( from, to ), address ) =
     let
         b_class l =
             if l then
@@ -22,7 +26,7 @@ campEvent (low_confidence, (before, after), place_icon, place, (from, to), addre
     in
         div []
             [ div [ class <| "timeline-item place-history-moment-outer" ++ (b_class low_confidence) ]
-                [ timeline_svg (before, after)
+                [ timeline_svg ( before, after )
                 , div [ class "segment-divider" ] []
                 , place_icon
                 , div [ class "place-history-moment-content timeline-item-content primary multi-line" ]
@@ -38,7 +42,10 @@ campEvent (low_confidence, (before, after), place_icon, place, (from, to), addre
                 ]
             ]
 
+
+
 -- Private
+
 
 event_history : Bool -> Html msg
 event_history l =
@@ -50,7 +57,8 @@ event_history l =
             ]
         , div [ attribute "style" "display:none" ]
             []
-        , div [ class "confirm-place-visit-button material-raised-button material-raised-button-default"
+        , div
+            [ class "confirm-place-visit-button material-raised-button material-raised-button-default"
             , attribute "style"
                 (if l then
                     ""
@@ -62,6 +70,7 @@ event_history l =
             ]
             [ text "Подтвердить" ]
         ]
+
 
 event_address : String -> Html msg
 event_address v =
@@ -95,19 +104,20 @@ event_place title =
         ]
 
 
-timeline_svg : (Bool, Bool) -> Html msg
-timeline_svg (t, b) =
+timeline_svg : ( Bool, Bool ) -> Html msg
+timeline_svg ( t, b ) =
     svg [ S.class "timeline-item-svg" ]
         [ line
             (if t then
                 [ S.class "timeline-item-svg-line", strokeLinecap "round", attribute "style" "stroke: rgb(1, 87, 155);", x1 "7", x2 "7", y1 "0", y2 "41" ]
-            else
-                [ S.class "", attribute "style" "display:none" ])
+             else
+                [ S.class "", attribute "style" "display:none" ]
+            )
             []
         , line
             (if b then
                 [ S.class "timeline-item-svg-line", strokeLinecap "round", attribute "style" "stroke: rgb(1, 87, 155);", x1 "7", x2 "7", y1 "41", y2 "100%" ]
-            else
+             else
                 [ S.class "", attribute "style" "display:none" ]
             )
             []

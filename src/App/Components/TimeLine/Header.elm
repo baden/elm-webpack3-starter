@@ -2,12 +2,18 @@ module Components.TimeLine.Header exposing (header, Header)
 
 import Html exposing (Html, div, text, i)
 import Html.Attributes exposing (class, tabindex, attribute, title)
+
+
 -- import Html.Events exposing (onClick)
 
-type alias Header = {
-    day : String    -- TODO: Date?
+
+type alias Header =
+    { day :
+        String
+        -- TODO: Date?
     , comment : String
-}
+    }
+
 
 header : Header -> Html msg
 header model =

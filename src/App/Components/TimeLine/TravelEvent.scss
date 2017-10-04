@@ -1,0 +1,45 @@
+.activity-expand-toggle {
+    left: 24px;
+    position: absolute;
+    top: 50%;
+}
+
+.travel-segment {
+    position: relative;
+}
+
+.travel-segment:not(.expanded) .activity-summary-chevron {
+    transform: translateY(-16px) rotate(90deg) !important;
+    transition: transform 800ms;
+}
+
+.travel-segment.expanded .activity-summary-chevron {
+    transform: translateY(-16px) rotate(270deg) !important;
+    transition: transform 800ms;
+}
+
+.material-icons-extended.activity-summary-chevron {
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.travel-segment:not(.expanded) .travel-segment-summary .timeline-item-content {
+    transition: opacity 900ms;
+}
+
+.travel-segment.expanded .activities-wrapper {
+    max-height: 5000px;
+    transition: max-height 900ms cubic-bezier(.2,0,1,.2);
+}
+
+.travel-segment:not(.expanded) .activities-wrapper {
+    max-height: 0;
+    transition: max-height 600ms cubic-bezier(0,1,.2,1);
+}
+
+.travel-segment.expanded .travel-segment-summary .timeline-item-content {
+    opacity: 0;
+    transition: opacity 800ms;
+}
