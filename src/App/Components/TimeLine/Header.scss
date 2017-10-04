@@ -1,0 +1,25 @@
+.timeline-header {
+    line-height: 24px;
+    margin: 24px 24px 16px 24px;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.timeline-header-title-container {
+    margin-right: auto;
+}
+
+.timeline-subtitle {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.54);
+}
+
+.timeline-header-button {
+    margin-left: 24px;
+}

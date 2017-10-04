@@ -60,7 +60,7 @@ view model =
     div []
         [ text <| "MAP: WIP" ++ toString model
         , div [ class "row" ]
-            [ div [ class "col-sm-6" ]
+            [ div [ class "col-sm-10" ]
                 [ TimeLine.view model.timeline |> Html.map TimeLineMessage
                 ]
             ]

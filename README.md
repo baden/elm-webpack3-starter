@@ -45,6 +45,7 @@ npm run build
 
 * https://github.com/ohanhi/elm-ement
 * https://gitpitch.com/
+* https://github.com/w0rm/elm-mogee/tree/master/src
 
 ## Learn links
 

@@ -1,0 +1,26 @@
+.timeline-item-icon {
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 1;
+}
+
+.timeline-item-icon.place-icon {
+    border-radius: 16px;
+    left: 16px;
+}
+
+.timeline-item-icon.place-icon:hover {
+    background-color: #e0e0e0;
+}
+
+.timeline-item-icon.place-icon, .timeline-item-icon.default-timeline-item-icon {
+    background-position: 50%;
+    background-size: 30px;
+    height: 30px;
+    top: 25px;
+    width: 30px;
+    -webkit-transition: box-shadow .218s;
+    -moz-transition: box-shadow .218s;
+    -o-transition: box-shadow .218s;
+    transition: box-shadow .218s;
+}

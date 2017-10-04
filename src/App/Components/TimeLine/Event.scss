@@ -1,0 +1,30 @@
+.duration-text {
+    border-bottom: 1px solid transparent;
+    border-radius: 2px;
+    color: rgba(0,0,0,0.54);
+    cursor: pointer;
+    margin: 0 8px;
+    outline: none;
+    padding: 4px 8px;
+    -webkit-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    -moz-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    -o-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+}
+
+.place-history-moment-outer:hover .duration-text {
+    border-bottom: 1px solid #eeeeee;
+}
+
+.place-history-moment-outer .duration-text:hover, .place-history-moment-outer.low-confidence .duration-text:hover {
+    border-bottom: 1px solid #4285f4;
+}
+
+.travel-segment-summary .duration-text {
+    margin-left: auto;
+    margin-right: 32px;
+}
+
+.segment-duration-part {
+    white-space: nowrap;
+}
