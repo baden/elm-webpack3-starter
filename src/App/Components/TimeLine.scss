@@ -6,6 +6,7 @@
 @import "TimeLine/CampEvent";
 @import "TimeLine/MoveEvent";
 @import "TimeLine/TravelEvent";
+@import "TimeLine/Item";
 
 .timeline-wrapper {
     max-width: 100%;
@@ -90,14 +91,6 @@
     /*background-color: #0cc;*/
 }
 
-.timeline-item {
-    line-height: 20px;
-    padding: 20px 16px;
-    position: relative;
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(0,0,0,0.54);
-}
 
 
 .timeline-item-svg {
@@ -125,32 +118,6 @@
 }
 
 
-
-.timeline-item-content.primary {
-    margin-left: 80px;
-    position: relative;
-    text-align: left;
-}
-
-.timeline-item-content.multi-line {
-    padding-top: 0;
-}
-
-.timeline-item-content {
-    box-sizing: border-box;
-}
-
-.timeline-item-title {
-    margin: 0;
-    -webkit-align-items: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
-
 .place-history-moment-outer .moment-edit-control.place-visit {
     background-color: #eeeeee;
     border: solid;
@@ -160,11 +127,6 @@
     font-weight: 500;
 }
 
-.timeline-item-title .place-visit {
-    font-size: 13px;
-    font-weight: 400;
-    color: rgba(0,0,0,0.87);
-}
 
 .place-history-moment-outer .moment-edit-control {
     margin-left: -12px;
@@ -182,19 +144,6 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 3px 6px rgba(0,0,0,.26);
 }
 
-.timeline-item-title-content {
-    display: inline-block;
-    font-weight: 500;
-    margin-right: auto;
-    vertical-align: middle;
-    -webkit-align-items: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
 
 
 
@@ -223,16 +172,6 @@
     display: inline-block;
 }
 
-.timeline-item-content.primary {
-    margin-left: 80px;
-    position: relative;
-    text-align: left;
-}
-
-
-.timeline-item-content {
-    box-sizing: border-box;
-}
 
 .photo-grid-wrapper {
     display: block;
@@ -273,45 +212,6 @@
     -ms-user-select: none;
 }
 
-
-.timeline-item-content.primary {
-    margin-left: 80px;
-    position: relative;
-    text-align: left;
-}
-
-.timeline-item-content.multi-line {
-    padding-top: 0;
-}
-
-
-.timeline-item-content {
-    box-sizing: border-box;
-}
-
-
-
-
-.timeline-item-content.primary {
-    margin-left: 80px;
-    position: relative;
-    text-align: left;
-}
-
-.timeline-item-content {
-    box-sizing: border-box;
-}
-
-.timeline-item-title {
-    margin: 0;
-    -webkit-align-items: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
 
 .travel-segment-summary-item {
     -webkit-align-items: center;
@@ -411,9 +311,4 @@
     -moz-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
     -o-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
     transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-}
-
-
-.timeline-item .timeline-item-text {
-    padding-top: 4px;
 }

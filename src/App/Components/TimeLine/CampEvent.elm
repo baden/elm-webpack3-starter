@@ -1,10 +1,11 @@
 module Components.TimeLine.CampEvent exposing (campEvent, CampEvent)
 
-import Html exposing (Html, div, text, i, hr, span)
-import Html.Attributes exposing (class, tabindex, attribute, title)
+import Html exposing (Html, div, text, i, hr, span, a)
+import Html.Attributes exposing (class, tabindex, attribute, title, href)
 import Svg exposing (svg, line)
 import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
 import Components.TimeLine.Event exposing (event_duration)
+import Components.TimeLine.Item exposing (item, item_content, item_title, item_title_content, item_event, item_subtitle)
 
 
 type alias CampEvent =
@@ -23,20 +24,29 @@ campEvent ( low_confidence, ( before, after ), place_icon, place, ( from, to ), 
                 " low-confidence"
             else
                 ""
+
+        visits =
+            [ item_event ( "Выключено зажигание", ( "10:20", "" ) )
+            , item_event ( "Включено зажигание", ( "10:20", "" ) )
+            ]
     in
         div []
-            [ div [ class <| "timeline-item place-history-moment-outer" ++ (b_class low_confidence) ]
+            [ (item ("place-history-moment-outer" ++ (b_class low_confidence)) Nothing)
                 [ timeline_svg ( before, after )
                 , div [ class "segment-divider" ] []
                 , place_icon
-                , div [ class "place-history-moment-content timeline-item-content primary multi-line" ]
-                    [ div [ class "timeline-item-title" ]
-                        [ event_place place
-                        , event_duration ( from, to )
-                        , event_params
+                , (item_content True)
+                    ((div []
+                        [ item_title
+                            [ event_place place
+                            , event_duration ( from, to )
+                            , event_params
+                            ]
+                        , item_subtitle address
                         ]
-                    , event_address address
-                    ]
+                     )
+                        :: visits
+                    )
                 , event_history low_confidence
                 , hr [ class "moment-divider" ] []
                 ]
@@ -49,7 +59,7 @@ campEvent ( low_confidence, ( before, after ), place_icon, place, ( from, to ), 
 
 event_history : Bool -> Html msg
 event_history l =
-    div [ class "place-history-moment-content timeline-item-content primary" ]
+    (item_content False)
         [ div [ class "photo-grid-wrapper", attribute "style" "display:none" ]
             [ div [ class "photo-grid" ]
                 [ text "Заправка 30л"
@@ -72,12 +82,6 @@ event_history l =
         ]
 
 
-event_address : String -> Html msg
-event_address v =
-    div [ class "timeline-item-text" ]
-        [ text v ]
-
-
 event_params : Html msg
 event_params =
     div [ attribute "aria-expanded" "false", attribute "aria-haspopup" "true", attribute "aria-label" "Параметры", class "place-visit-overflow-menu-button material-icons-extended material-icon-with-ripple goog-inline-block goog-menu-button", attribute "role" "menu", attribute "style" "user-select: none;", attribute "tabindex" "0" ]
@@ -94,7 +98,7 @@ event_params =
 
 event_place : String -> Html msg
 event_place title =
-    div [ class "edit-dialog-select moment-edit-control place-visit timeline-item-title-content", attribute "role" "button", attribute "tabindex" "0" ]
+    item_title_content
         [ div [ attribute "style" "display:none" ]
             []
         , div [ class "place-visit-title" ]

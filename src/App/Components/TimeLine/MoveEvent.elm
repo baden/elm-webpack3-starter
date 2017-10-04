@@ -6,6 +6,7 @@ import Svg exposing (svg, line)
 import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
 import Components.TimeLine.Event exposing (event_duration)
 import Components.TimeLine.ActivityIcon
+import Components.TimeLine.Item exposing (item, item_content, item_title, item_title_content, item_event)
 
 
 type alias MoveEvent =
@@ -24,17 +25,17 @@ moveEvent ( ( event, value ), duration, events ) =
             events
                 |> List.map
                     (\( t, d ) ->
-                        activity_place_visit ( t, d )
+                        item_event ( t, ( d, "" ) )
                     )
     in
         div []
             [ div [ class "activity-segment-outer" ]
-                [ div [ class "timeline-item place-history-moment-outer" ]
+                [ (item "place-history-moment-outer" Nothing)
                     [ activity_svg_line
                     , activity_add_contol
-                    , div [ class "place-history-moment-content timeline-item-content primary multi-line" ]
+                    , (item_content True)
                         ((div []
-                            [ div [ class "timeline-item-title" ]
+                            [ item_title
                                 [ activity_place ( event, value )
                                 , event_duration ( duration, "" )
                                 , activity_place_control False
@@ -55,27 +56,12 @@ moveEvent ( ( event, value ), duration, events ) =
 
 activity_place : ( String, String ) -> Html msg
 activity_place ( title, distance ) =
-    div [ class "edit-dialog-select moment-edit-control timeline-item-title-content", attribute "role" "button", attribute "tabindex" "0" ]
+    item_title_content
         [ Components.TimeLine.ActivityIcon.icon Components.TimeLine.ActivityIcon.ActivityIconMove
         , span [ class "activity-type" ]
             [ text title ]
         , div [ class "distance-text", attribute "style" "" ]
             [ text distance ]
-        ]
-
-
-activity_place_visit : ( String, String ) -> Html msg
-activity_place_visit ( titl, time ) =
-    div [ class "timeline-item-text child-place-visit" ]
-        [ a [ class "child-place-visit-content", href "/maps/place//data=!4m2!3m1!1s0x40dbdb09a36b4a29:0x8a3bd0a3bedb89d3?authuser=0&hl=ru&gl=ua" ]
-            [ div [ class "child-place-visit-icon", attribute "style" "background-image:url(https://maps.gstatic.com/mapsactivities/icons/poi_icons/30_visited/tree_2x.png)" ]
-                []
-            , span [ class "child-place-visit-title" ]
-                [ text titl ]
-            ]
-        , event_duration ( time, "" )
-        , i [ class "child-place-visit-button material-icons-extended material-icon-with-ripple", title "Удалить запись", attribute "role" "button", attribute "tabindex" "0" ]
-            [ text "delete" ]
         ]
 
 

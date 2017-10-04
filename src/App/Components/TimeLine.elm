@@ -84,7 +84,7 @@ content model =
                 [ Components.TimeLine.TopActivity.top top_activity_model
                 , event model False
                 , event2 model
-                , event3 model True
+                , event3 model False
                 , event4 model
                 , eventL model False
                 ]

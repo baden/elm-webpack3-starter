@@ -8,11 +8,11 @@ module Components.TimeLine.TravelEvent
 
 import Html exposing (Html, button, div, text, i, span, hr, node, img, a)
 import Html.Attributes exposing (class, type_, tabindex, attribute, title, src, href)
-import Html.Events exposing (onClick)
 import Svg exposing (svg, line)
 import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
 import Components.TimeLine.ActivityIcon
 import Components.TimeLine.Event exposing (event_duration)
+import Components.TimeLine.Item exposing (item, item_content, item_title)
 
 
 type alias TravelEvent =
@@ -63,11 +63,11 @@ travel_event model msg moments =
 
 travel_segment : msg -> Html msg
 travel_segment msg =
-    div [ class "timeline-item travel-segment-summary", attribute "role" "button", attribute "tabindex" "0", onClick msg ]
+    (item "travel-segment-summary" (Just msg))
         [ activity_svg_line
         , travel_segment_expander
-        , div [ class "timeline-item-content primary" ]
-            [ div [ class "timeline-item-title" ]
+        , (item_content False)
+            [ item_title
                 [ div [ class "travel-segment-summary-itmes" ]
                     [ travel_segment_item Components.TimeLine.ActivityIcon.ActivityIconMove
                     , travel_segment_item Components.TimeLine.ActivityIcon.ActivityIconCamp

@@ -3,6 +3,7 @@ module Components.TimeLine.TopActivity exposing (top, TopActivity)
 import Html exposing (Html, div, text, i)
 import Html.Attributes exposing (class, tabindex, attribute, title)
 import Components.TimeLine.ActivityIcon
+import Components.TimeLine.Item exposing (item)
 
 
 type alias TopActivity =
@@ -17,7 +18,7 @@ type alias TopActivity =
 
 top : TopActivity -> Html msg
 top model =
-    div [ class "timeline-item top-activities" ]
+    (item "top-activities" Nothing)
         [ top_activity ( "Движение", Components.TimeLine.ActivityIcon.ActivityIconMove, model.moves.distance, model.moves.duration )
         , top_activity ( "Стоянка", Components.TimeLine.ActivityIcon.ActivityIconCamp, "", model.camp.duration )
         ]
