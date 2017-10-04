@@ -627,3 +627,75 @@
     background-color: rgba(0,0,0,0.54);
     color: white;
 }
+
+.segment-duration-part {
+    white-space: nowrap;
+}
+
+.place-history-moment-outer:hover .add-a-place-icon:hover, .add-a-place-icon:hover+.add-a-place-text {
+    color: rgba(0,0,0,0.87);
+    visibility: visible;
+}
+
+.place-history-moment-outer:hover .add-a-place-icon {
+    color: rgba(0,0,0,0.54);
+}
+
+.child-place-visit {
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.child-place-visit .child-place-visit-content {
+    color: rgba(0,0,0,0.54);
+    cursor: pointer;
+    margin-right: auto;
+    text-decoration: none;
+    outline: none;
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.child-place-visit .child-place-visit-icon {
+    background-size: 20px;
+    height: 20px;
+    margin-right: 20px;
+    width: 20px;
+}
+
+.child-place-visit .child-place-visit-title {
+    font: 500 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+.child-place-visit:hover .child-place-visit-title, .child-place-visit .child-place-visit-content:focus .child-place-visit-title {
+    border-bottom: 1px solid #eeeeee;
+}
+
+.place-history-moment-outer .moment-edit-control {
+    margin-left: -12px;
+    min-height: 36px;
+    min-width: 192px;
+    padding: 2px 12px;
+    -webkit-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    -moz-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    -o-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+}
+
+.activity-segment-outer .moment-edit-control {
+    border: 1px solid transparent;
+}
+
+.activity-segment-outer .timeline-item-title-content .activity-icon {
+    margin-right: 16px;
+}

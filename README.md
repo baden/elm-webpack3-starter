@@ -44,6 +44,7 @@ npm run build
 ## Useless links (Just kidding)
 
 * https://github.com/ohanhi/elm-ement
+* https://gitpitch.com/
 
 ## Learn links
 
@@ -59,3 +60,5 @@ npm run build
 * More functional-style https://github.com/CaronaBoard/caronaboard
 * Use css3 animation events (webkitAnimationEnd, animationend, transitionend)
 (https://github.com/xarvh/elm-dropdown-menu/blob/2098e208c20afdaaa3391bbaf7b1df7d07770d05/src/DropdownMenu.elm)
+
+Fix SVG attributes?
