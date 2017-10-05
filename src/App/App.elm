@@ -1,7 +1,5 @@
 module App exposing (..)
 
-import Animation
-import Components.Loader exposing (hideLoader, loader, showLoader)
 import Html exposing (Html, a, button, div, h1, text)
 import Html.Attributes exposing (class, href, title, type_)
 import Html.Events exposing (onClick, onWithOptions)
@@ -15,18 +13,12 @@ import Return.Optics exposing (refractl)
 
 type alias Model =
     { page : Page.Model
-    , loaderStyle : Animation.State
     }
 
 
 pagel : Lens Model Page.Model
 pagel =
     Lens .page <| \u m -> { m | page = u }
-
-
-loaderStylel : Lens Model Animation.State
-loaderStylel =
-    Lens .loaderStyle <| \u m -> { m | loaderStyle = u }
 
 
 type Msg
@@ -36,9 +28,6 @@ type Msg
       -- | HomeClicked
       -- | AccountClicked
     | NavigateTo String
-    | Animate Animation.Msg
-    | StartLoading
-    | StopLoading
 
 
 
@@ -58,16 +47,6 @@ init location =
 
         initModel =
             { page = pageModel
-            , loaderStyle =
-                Animation.styleWith
-                    (Animation.spring
-                        { stiffness = 70
-                        , damping = 20
-                        }
-                    )
-                    [ Animation.opacity 0
-                    , Animation.display Animation.none
-                    ]
             }
     in
         Return.singleton initModel
@@ -100,17 +79,6 @@ update msg =
             NavigateTo pathname ->
                 Return.command <| Navigation.newUrl pathname
 
-            Animate animMsg ->
-                Return.map <|
-                    Monocle.Lens.modify loaderStylel <|
-                        Animation.update animMsg
-
-            StartLoading ->
-                Return.map <| Monocle.Lens.modify loaderStylel showLoader
-
-            StopLoading ->
-                Return.map <| Monocle.Lens.modify loaderStylel hideLoader
-
 
 view : Model -> Html Msg
 view model =
@@ -121,12 +89,6 @@ view model =
 -- div [ class "container-overflow-wrap" ]
 --     [ div [ class "container" ]
 --         [ h1 [] [ text "App component" ]
---         , div [ class "row" ]
---             [ div [ class "col-sm-12" ]
---                 [ button [ type_ "button", class "btn btn-primary", onClick StartLoading ] [ text "Simulate start loading" ]
---                 , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
---                 ]
---             ]
 --           -- , div [ class "row row-backbordered" ]
 --           --     [ div [ class "col-sm-12" ]
 --           --         [ link "Домой" HomeClicked
@@ -182,7 +144,6 @@ subscriptions model =
     Sub.batch
         [ Page.pageSubs model.page
             |> Sub.map PageMsg
-        , Animation.subscription Animate [ model.loaderStyle ]
         ]
 
 
