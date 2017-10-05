@@ -57,13 +57,19 @@ update msg =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text <| "MAP: WIP" ++ toString model
-        , div [ class "row" ]
-            [ div [ class "col-sm-10" ]
+    div [ class "map-page" ]
+        [ div [ class "map-main" ] [ text "Тут будет карта" ]
+        , div [ class "map-control" ]
+            [ div [ class "map-control-timeline" ]
                 [ TimeLine.view model.timeline |> Html.map TimeLineMessage
                 ]
             ]
+        , div [ class "map-debug" ] [ text <| "MAP: WIP" ++ toString model ]
+          -- , div [ class "row" ]
+          --     [ div [ class "col-sm-10" ]
+          --         [ TimeLine.view model.timeline |> Html.map TimeLineMessage
+          --         ]
+          --     ]
         ]
 
 

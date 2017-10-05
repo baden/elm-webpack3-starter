@@ -114,33 +114,37 @@ update msg =
 
 view : Model -> Html Msg
 view model =
-    div [ class "container-overflow-wrap" ]
-        [ div [ class "container" ]
-            [ h1 [] [ text "App component" ]
-            , div [ class "row" ]
-                [ div [ class "col-sm-12" ]
-                    [ button [ type_ "button", class "btn btn-primary", onClick StartLoading ] [ text "Simulate start loading" ]
-                    , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
-                    ]
-                ]
-              -- , div [ class "row row-backbordered" ]
-              --     [ div [ class "col-sm-12" ]
-              --         [ link "Домой" HomeClicked
-              --         , link "Пользователь" AccountClicked
-              --         ]
-              --     ]
-            , div [ class "row" ]
-                [ div [ class "col-sm-12" ]
-                    [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
-                    , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
-                    , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
-                    , linkTo "/map" [ class "btn btn-primary" ] [ text "Карта" ]
-                    ]
-                ]
-            , Page.view model.page |> Html.map PageMsg
-            ]
-        , loader model.loaderStyle
-        ]
+    Page.view model.page |> Html.map PageMsg
+
+
+
+-- div [ class "container-overflow-wrap" ]
+--     [ div [ class "container" ]
+--         [ h1 [] [ text "App component" ]
+--         , div [ class "row" ]
+--             [ div [ class "col-sm-12" ]
+--                 [ button [ type_ "button", class "btn btn-primary", onClick StartLoading ] [ text "Simulate start loading" ]
+--                 , button [ type_ "button", class "btn btn-primary", onClick StopLoading ] [ text "Simulate stop loading" ]
+--                 ]
+--             ]
+--           -- , div [ class "row row-backbordered" ]
+--           --     [ div [ class "col-sm-12" ]
+--           --         [ link "Домой" HomeClicked
+--           --         , link "Пользователь" AccountClicked
+--           --         ]
+--           --     ]
+--         , div [ class "row" ]
+--             [ div [ class "col-sm-12" ]
+--                 [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
+--                 , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
+--                 , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
+--                 , linkTo "/map" [ class "btn btn-primary" ] [ text "Карта" ]
+--                 ]
+--             ]
+--         , Page.view model.page |> Html.map PageMsg
+--         ]
+--     , loader model.loaderStyle
+--     ]
 
 
 linkTo : String -> (List (Html.Attribute Msg) -> List (Html Msg) -> Html Msg)
