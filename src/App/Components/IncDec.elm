@@ -6,16 +6,19 @@ import Html.Events exposing (onClick)
 import Task
 import Monocle.Lens as Lens exposing (Lens)
 import Return exposing (Return)
+import Time exposing (Time, second)
 
 
 type alias Model =
     { value : Int
+    , counter : Time
     }
 
 
 defaultModel : Model
 defaultModel =
     { value = 0
+    , counter = 0
     }
 
 
@@ -24,9 +27,15 @@ value =
     Lens .value <| \u m -> { m | value = u }
 
 
+counter : Lens Model Float
+counter =
+    Lens .counter <| \u m -> { m | counter = u }
+
+
 type Msg
     = Increment
     | Decrement
+    | Tick Time
 
 
 
@@ -55,6 +64,9 @@ update msg =
             Decrement ->
                 Lens.modify value ((+) -1)
 
+            Tick newTime ->
+                counter.set newTime
+
 
 view : Model -> Html Msg
 view model =
@@ -63,9 +75,13 @@ view model =
         , button [ type_ "button", class "btn btn-primary", onClick Decrement ] [ text "-" ]
         , div [] [ text (toString model.value) ]
         , button [ type_ "button", class "btn btn-primary", onClick Increment ] [ text "+" ]
+        , div [] [ text (toString model.counter) ]
         ]
 
 
 subscriptions : Model -> Sub Msg
 subscriptions =
-    always Sub.none
+    always <|
+        Sub.batch
+            [ Time.every second Tick
+            ]

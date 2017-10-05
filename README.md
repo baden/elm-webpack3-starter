@@ -40,6 +40,7 @@ npm run build
 * https://github.com/arturopala/elm-monocle
 * https://github.com/klaftertief/slippery-slope
 * http://package.elm-lang.org/packages/debois/elm-mdl/latest
+* https://github.com/krisajenkins/remotedata
 
 ## Useless links (Just kidding)
 

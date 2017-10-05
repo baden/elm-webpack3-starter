@@ -82,34 +82,34 @@ init location =
 
 update : Msg -> Model -> Return Msg Model
 update msg =
-    let
-        _ =
-            Debug.log "update" msg
-    in
-        Return.singleton
-            >> case msg of
-                NoOp ->
-                    Return.zero
+    -- let
+    --     _ =
+    --         Debug.log "update" msg
+    -- in
+    Return.singleton
+        >> case msg of
+            NoOp ->
+                Return.zero
 
-                UrlChange location ->
-                    refractl pagel PageMsg <| always (Page.init location)
+            UrlChange location ->
+                refractl pagel PageMsg <| always (Page.init location)
 
-                PageMsg pageMsg ->
-                    refractl pagel PageMsg <| Page.update pageMsg
+            PageMsg pageMsg ->
+                refractl pagel PageMsg <| Page.update pageMsg
 
-                NavigateTo pathname ->
-                    Return.command <| Navigation.newUrl pathname
+            NavigateTo pathname ->
+                Return.command <| Navigation.newUrl pathname
 
-                Animate animMsg ->
-                    Return.map <|
-                        Monocle.Lens.modify loaderStylel <|
-                            Animation.update animMsg
+            Animate animMsg ->
+                Return.map <|
+                    Monocle.Lens.modify loaderStylel <|
+                        Animation.update animMsg
 
-                StartLoading ->
-                    Return.map <| Monocle.Lens.modify loaderStylel showLoader
+            StartLoading ->
+                Return.map <| Monocle.Lens.modify loaderStylel showLoader
 
-                StopLoading ->
-                    Return.map <| Monocle.Lens.modify loaderStylel hideLoader
+            StopLoading ->
+                Return.map <| Monocle.Lens.modify loaderStylel hideLoader
 
 
 view : Model -> Html Msg
