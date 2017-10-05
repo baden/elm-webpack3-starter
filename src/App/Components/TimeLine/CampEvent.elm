@@ -22,7 +22,7 @@ campEvent ( ( before, after ), place_icon, place, ( from, to ), address ) =
     let
         visits =
             [ item_event ( "Выключено зажигание", ( "10:20", "" ) )
-            , item_event ( "Включено зажигание", ( "10:20", "" ) )
+            , item_event ( "Включено зажигание", ( "14:43", "" ) )
             ]
     in
         div []

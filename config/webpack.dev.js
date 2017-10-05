@@ -37,9 +37,11 @@ module.exports = function(options) {
         {
           test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          use: HMR?
-          ['elm-hot-loader','elm-webpack-loader']
-          :['elm-webpack-loader']
+          use:
+            HMR?
+              ['elm-hot-loader','elm-webpack-loader']
+            :
+              ['elm-webpack-loader']
         }
       ],
       noParse: /\.elm$/
@@ -56,9 +58,9 @@ module.exports = function(options) {
     devServer: {
       contentBase: './src/',
       inline: true,
-      hot: true,
+    //   hot: true,
       historyApiFallback: true,
       open: true
     }
-  }
+  };
 };

@@ -76,7 +76,7 @@ content model =
     let
         top_activity_model =
             Components.TimeLine.TopActivity.TopActivity
-                { distance = "130 км", duration = "5 ч. 6 мин." }
+                { distance = "139 км", duration = "5 ч. 6 мин." }
                 { duration = "5 ч. 6 мин." }
     in
         div [ class "timeline-content" ]
