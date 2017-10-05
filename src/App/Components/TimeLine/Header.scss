@@ -14,6 +14,12 @@
     margin-right: auto;
 }
 
+.timeline-title {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.87);
+}
+
 .timeline-subtitle {
     font-size: 15px;
     font-weight: 400;
@@ -22,4 +28,42 @@
 
 .timeline-header-button {
     margin-left: 24px;
+}
+
+.material-icon-with-ripple {
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+.material-icon-with-ripple:before {
+    background-color: rgba(0,0,0,0.12);
+    border-radius: 50%;
+    content: '';
+    height: 32px;
+    left: -4px;
+    position: absolute;
+    top: -4px;
+    width: 32px;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
+    -moz-transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
+    -o-transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
+    transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
+}
+
+.material-icon-with-ripple:hover, .material-icon-with-ripple:focus {
+    color: rgba(0,0,0,0.87);
+}
+
+.material-icon-with-ripple:active:before, .material-icon-with-ripple:focus:before {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
 }

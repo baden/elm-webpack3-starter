@@ -67,6 +67,4 @@ item_event ( v, dur ) =
                 [ text v ]
             ]
         , event_duration dur
-          -- , i [ class "child-place-visit-button material-icons-extended material-icon-with-ripple", title "Удалить запись", attribute "role" "button", attribute "tabindex" "0" ]
-          --     [ text "delete" ]
         ]

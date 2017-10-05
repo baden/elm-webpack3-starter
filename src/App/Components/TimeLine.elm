@@ -82,11 +82,11 @@ content model =
         div [ class "timeline-content" ]
             [ div []
                 [ Components.TimeLine.TopActivity.top top_activity_model
-                , event model False
+                , event model
                 , event2 model
-                , event3 model False
+                , event3 model
                 , event4 model
-                , eventL model False
+                , eventL model
                 ]
             ]
 
@@ -101,19 +101,19 @@ home_image =
     Components.TimeLine.PlaceIcon.icon Components.TimeLine.PlaceIcon.PlaceIconHome
 
 
-event : Model -> Bool -> Html Msg
-event model l =
-    Components.TimeLine.CampEvent.campEvent ( l, ( False, True ), home_image, "Дом", ( "11:02", "15:20" ), "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" )
+event : Model -> Html Msg
+event model =
+    Components.TimeLine.CampEvent.campEvent ( ( False, True ), home_image, "Дом", ( "11:02", "15:20" ), "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" )
 
 
-event3 : Model -> Bool -> Html Msg
-event3 model l =
-    Components.TimeLine.CampEvent.campEvent ( l, ( True, True ), poi_image, "Склад №1", ( "16:02", "16:05" ), "Днипро, Днепропетровская область, 49000" )
+event3 : Model -> Html Msg
+event3 model =
+    Components.TimeLine.CampEvent.campEvent ( ( True, True ), poi_image, "Склад №1", ( "16:02", "16:05" ), "Днипро, Днепропетровская область, 49000" )
 
 
-eventL : Model -> Bool -> Html Msg
-eventL model l =
-    Components.TimeLine.CampEvent.campEvent ( l, ( True, False ), home_image, "Гараж", ( "23:20", "23:59" ), "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" )
+eventL : Model -> Html Msg
+eventL model =
+    Components.TimeLine.CampEvent.campEvent ( ( True, False ), home_image, "Гараж", ( "23:20", "23:59" ), "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" )
 
 
 event2 : Model -> Html Msg

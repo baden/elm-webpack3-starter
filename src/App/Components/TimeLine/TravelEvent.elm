@@ -13,6 +13,7 @@ import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, str
 import Components.TimeLine.ActivityIcon
 import Components.TimeLine.Event exposing (event_duration)
 import Components.TimeLine.Item exposing (item, item_content, item_title)
+import Components.TimeLine.Icons as I
 
 
 type alias TravelEvent =
@@ -89,10 +90,8 @@ activity_svg_line =
 travel_segment_expander : Html msg
 travel_segment_expander =
     div [ class "activity-expand-toggle" ]
-        [ i [ class "material-icons-extended rtl-mirrored activity-summary-chevron upper" ]
-            [ text "chevron_left" ]
-        , i [ class "material-icons-extended rtl-mirrored activity-summary-chevron lower" ]
-            [ text "chevron_right" ]
+        [ I.upper
+        , I.lower
         ]
 
 
@@ -100,6 +99,5 @@ travel_segment_item : Components.TimeLine.ActivityIcon.ActivityIcon -> Html msg
 travel_segment_item tit =
     div [ class "travel-segment-summary-item" ]
         [ Components.TimeLine.ActivityIcon.icon tit
-        , i [ class "material-icons-extended rtl-mirrored chevron-icon" ]
-            [ text "chevron_right " ]
+        , I.right
         ]

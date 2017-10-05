@@ -55,3 +55,43 @@
 .timeline-item .timeline-item-text {
     padding-top: 4px;
 }
+
+
+.place-history-moment-outer .moment-edit-control.place-visit {
+    background-color: #eeeeee;
+    border: solid;
+    border-color: #e0e0e0;
+    border-radius: 2px;
+    border-width: 1px;
+    font-weight: 500;
+}
+
+.place-history-moment-outer .moment-edit-control {
+    margin-left: -12px;
+    min-height: 36px;
+    min-width: 192px;
+    padding: 2px 12px;
+    -webkit-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    -moz-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    -o-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+    transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
+}
+
+.place-history-moment-outer:hover .moment-edit-control {
+    background-color: #eeeeee;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 1px 5px rgba(0,0,0,.24);
+    -webkit-transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
+    -moz-transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
+    -o-transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
+    transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
+}
+
+
+.place-history-moment-outer .moment-edit-control:hover {
+    border-color: #4285f4;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 3px 6px rgba(0,0,0,.26);
+}
+
+.place-history-moment-outer .edit-dialog-select .drop-down {
+    margin-left: auto;
+}

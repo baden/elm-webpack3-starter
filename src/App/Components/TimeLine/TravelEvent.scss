@@ -43,3 +43,41 @@
     opacity: 0;
     transition: opacity 800ms;
 }
+
+.travel-segment-summary-item {
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.travel-segment-summary .activity-icon, .travel-segment-summary:last-child .chevron-icon {
+    margin-right: 16px;
+}
+
+.travel-segment-summary-itmes {
+    display: flex;
+}
+
+.travel-segment-summary-item:last-child .chevron-icon {
+    display: none;
+}
+
+
+.travel-segment-summary .chevron-icon {
+    margin-right: 16px;
+}
+
+
+.travel-segment:not(.expanded) .travel-segment-summary:hover .activity-summary-chevron, .travel-segment:not(.expanded) .travel-segment-summary:hover .activity-icon, .travel-segment:not(.expanded) .travel-segment-summary:hover .chevron-icon {
+    color: rgba(0,0,0,0.87);
+    opacity: .87;
+}
+
+.travel-segment.expanded .activities-wrapper {
+    max-height: 5000px;
+    transition: max-height 900ms cubic-bezier(.2,0,1,.2);
+}

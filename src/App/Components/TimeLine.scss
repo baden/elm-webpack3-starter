@@ -7,6 +7,7 @@
 @import "TimeLine/MoveEvent";
 @import "TimeLine/TravelEvent";
 @import "TimeLine/Item";
+@import "TimeLine/Icons";
 
 .timeline-wrapper {
     max-width: 100%;
@@ -15,83 +16,9 @@
 }
 
 
-
-.timeline-title {
-    font-size: 20px;
-    font-weight: 400;
-    color: rgba(0,0,0,0.87);
-}
-
-
-
-.material-icon-with-ripple {
-    cursor: pointer;
-    outline: none;
-    position: relative;
-}
-
-.material-icons-extended {
-    color: rgba(0,0,0,0.54);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-.material-icons-extended {
-    font-family: 'Material Icons Extended';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-}
-
-
-.place-history-moment-outer:hover .moment-edit-control {
-    background-color: #eeeeee;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 1px 5px rgba(0,0,0,.24);
-    -webkit-transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
-    -moz-transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
-    -o-transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
-    transition: box-shadow .2s cubic-bezier(0.4,0.0,1,1);
-}
-
-.material-icon-with-ripple:before {
-    background-color: rgba(0,0,0,0.12);
-    border-radius: 50%;
-    content: '';
-    height: 32px;
-    left: -4px;
-    position: absolute;
-    top: -4px;
-    width: 32px;
-    -webkit-transform: scale(0);
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    -o-transform: scale(0);
-    transform: scale(0);
-    -webkit-transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
-    -moz-transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
-    -o-transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
-    transition: transform .1s cubic-bezier(0.4,0.0,0.2,1);
-}
-
-.material-icon-with-ripple:hover, .material-icon-with-ripple:focus {
-    color: rgba(0,0,0,0.87);
-}
-
 .timeline-content {
     /*background-color: #0cc;*/
 }
-
-
 
 .timeline-item-svg {
     height: 100%;
@@ -106,82 +33,6 @@
     stroke-width: 14px;
 }
 
-.segment-divider {
-    background-color: rgba(255,255,255,0.54);
-    border-radius: 5px;
-    height: 10px;
-    left: 59px;
-    margin-top: 16px;
-    position: absolute;
-    width: 10px;
-    z-index: 1;
-}
-
-
-.place-history-moment-outer .moment-edit-control.place-visit {
-    background-color: #eeeeee;
-    border: solid;
-    border-color: #e0e0e0;
-    border-radius: 2px;
-    border-width: 1px;
-    font-weight: 500;
-}
-
-
-.place-history-moment-outer .moment-edit-control {
-    margin-left: -12px;
-    min-height: 36px;
-    min-width: 192px;
-    padding: 2px 12px;
-    -webkit-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-    -moz-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-    -o-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-    transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-}
-
-.place-history-moment-outer .moment-edit-control:hover {
-    border-color: #4285f4;
-    box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 3px 6px rgba(0,0,0,.26);
-}
-
-
-
-
-
-.material-icon-with-ripple {
-    cursor: pointer;
-    outline: none;
-    position: relative;
-}
-
-.place-visit-overflow-menu-button {
-    height: 24px;
-    width: 24px;
-}
-
-.material-icons-extended {
-    color: rgba(0,0,0,0.54);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-.goog-inline-block {
-    position: relative;
-    display: -moz-inline-box;
-    display: inline-block;
-}
-
-
-.photo-grid-wrapper {
-    display: block;
-    margin-top: 18px;
-    min-height: 70px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
 .moment-divider {
     height: 1px;
     left: 0;
@@ -194,121 +45,6 @@
 }
 
 
-.travel-segment.expanded .activities-wrapper {
-    max-height: 5000px;
-    transition: max-height 900ms cubic-bezier(.2,0,1,.2);
-}
-
 .activities-wrapper {
     overflow: hidden;
-}
-
-
-
-.material-icons-extended {
-    color: rgba(0,0,0,0.54);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-
-.travel-segment-summary-item {
-    -webkit-align-items: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
-
-.travel-segment-summary .activity-icon, .travel-segment-summary:last-child .chevron-icon {
-    margin-right: 16px;
-}
-
-.travel-segment-summary-itmes {
-    display: flex;
-}
-
-.travel-segment-summary-item:last-child .chevron-icon {
-    display: none;
-}
-
-
-.travel-segment-summary .chevron-icon {
-    margin-right: 16px;
-}
-
-.material-icons-extended {
-    color: rgba(0,0,0,0.54);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-
-
-
-
-.travel-segment:not(.expanded) .travel-segment-summary:hover .activity-summary-chevron, .travel-segment:not(.expanded) .travel-segment-summary:hover .activity-icon, .travel-segment:not(.expanded) .travel-segment-summary:hover .chevron-icon {
-    color: rgba(0,0,0,0.87);
-    opacity: .87;
-}
-
-
-.place-history-moment-outer .edit-dialog-select .drop-down {
-    margin-left: auto;
-}
-
-.material-icon-with-ripple:active:before, .material-icon-with-ripple:focus:before {
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-}
-
-
-.timeline-item.low-confidence::before {
-    background-color: #eeeeee;
-    border-radius: 2px;
-    content: '';
-    height: calc(100% - 16px);
-    left: 8px;
-    position: absolute;
-    top: 8px;
-    width: calc(100% - 16px);
-    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 1px 5px rgba(0,0,0,.24);
-}
-
-.material-icons-extended.sp-icon {
-    border-radius: 50%;
-    color: rgba(0,0,0,0.54);
-    cursor: pointer;
-    font-size: 18px;
-    height: 24px;
-    line-height: 24px;
-    outline: none;
-    text-align: center;
-    width: 24px;
-}
-
-.material-icons-extended.sp-icon:hover, .material-icons-extended.sp-icon.active {
-    background-color: rgba(0,0,0,0.54);
-    color: white;
-}
-
-
-
-
-.place-history-moment-outer .moment-edit-control {
-    margin-left: -12px;
-    min-height: 36px;
-    min-width: 192px;
-    padding: 2px 12px;
-    -webkit-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-    -moz-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-    -o-transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
-    transition: background-color .2s cubic-bezier(0.4,0.0,1,1);
 }
