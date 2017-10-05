@@ -48,7 +48,7 @@ module.exports = function(options) {
     },
     plugins: [
       new ExtractTextPlugin("styles.css"),
-      new webpack.HotModuleReplacementPlugin(),
+      // new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new HtmlWebpackPlugin({
         template: './src/index.html'
@@ -57,8 +57,8 @@ module.exports = function(options) {
     devtool: 'eval',
     devServer: {
       contentBase: './src/',
-      inline: true,
-    //   hot: true,
+      // inline: true,
+      // hot: true,
       historyApiFallback: true,
       open: true
     }
