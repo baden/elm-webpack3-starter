@@ -1,13 +1,26 @@
-module Components.Loader exposing (hideLoader, loader, showLoader)
+module Components.Loader exposing (loader)
 
-import Animation exposing (..)
+-- import Animation exposing (..)
+
 import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)
+import Html.Events exposing (on)
+import Json.Decode
 
 
-loader : Animation.State -> Html msg
-loader style =
-    div (Animation.render style ++ [ class "loader-container" ])
+loader : Bool -> msg -> Html msg
+loader visible msg1 =
+    div
+        [ class <|
+            "loader-container"
+                ++ (if visible then
+                        " show"
+                    else
+                        " hide"
+                   )
+        , on "transitionend" <|
+            Json.Decode.succeed msg1
+        ]
         [ div [ class "loader" ] [ text "Loading..." ] ]
 
 
@@ -36,21 +49,19 @@ loader style =
 --             -- </form>
 --             ]
 --         ]
-
-
-showLoader =
-    Animation.interrupt
-        [ Animation.set
-            [ Animation.display Animation.flex ]
-        , Animation.set
-            [ Animation.opacity 1 ]
-        ]
-
-
-hideLoader =
-    Animation.interrupt
-        [ Animation.to
-            [ Animation.opacity 0 ]
-        , Animation.set
-            [ Animation.display Animation.none ]
-        ]
+-- showLoader =
+--     Animation.interrupt
+--         [ Animation.set
+--             [ Animation.display Animation.flex ]
+--         , Animation.set
+--             [ Animation.opacity 1 ]
+--         ]
+--
+--
+-- hideLoader =
+--     Animation.interrupt
+--         [ Animation.to
+--             [ Animation.opacity 0 ]
+--         , Animation.set
+--             [ Animation.display Animation.none ]
+--         ]
