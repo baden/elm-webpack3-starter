@@ -17,12 +17,8 @@ import Monocle.Lens exposing (Lens)
 import Return exposing (Return)
 import LensChild as L
 import Components.Loader exposing (loader)
-import Json.Decode as Json
 import Array exposing (Array)
 import Helper exposing (link)
-
-
--- import Animation
 
 
 type alias Model =
@@ -35,14 +31,28 @@ type alias Model =
     }
 
 
-incdec1l : Lens Model IncDec.Model
-incdec1l =
-    Lens .incdec1 <| \u m -> { m | incdec1 = u }
+incdec1Component =
+    L.component
+        .incdec1
+        (\u m -> { m | incdec1 = u })
+        IncDecMessage
+        { init = IncDec.init
+        , view = IncDec.view
+        , update = IncDec.update
+        , subscriptions = IncDec.subscriptions
+        }
 
 
-incdec2l : Lens Model IncDec.Model
-incdec2l =
-    Lens .incdec2 <| \u m -> { m | incdec2 = u }
+incdec2Component =
+    L.component
+        .incdec2
+        (\u m -> { m | incdec2 = u })
+        IncDecMessage
+        { init = IncDec.init
+        , view = IncDec.view
+        , update = IncDec.update
+        , subscriptions = IncDec.subscriptions
+        }
 
 
 incdecl : Int -> Lens Model IncDec.Model
@@ -67,7 +77,6 @@ loaderStylel =
 type Msg
     = Tick Time
     | IncDecMessage (Lens Model IncDec.Model) IncDec.Msg
-      -- | Animate Animation.Msg
     | StartLoading
     | StopLoading
     | EndAnimation
@@ -90,8 +99,8 @@ initModel i1 i2 =
 init : ( Model, Cmd Msg )
 init =
     Return.map2 initModel
-        (L.init incdec1l IncDecMessage IncDec.init)
-        (L.init incdec2l IncDecMessage IncDec.init)
+        (L.initComponent incdec1Component)
+        (L.initComponent incdec2Component)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -107,16 +116,11 @@ update msg =
             IncDecMessage lens subMsg ->
                 L.update lens IncDecMessage <| IncDec.update subMsg
 
-            -- Animate animMsg ->
-            --     Return.map <|
-            --         Monocle.Lens.modify loaderStylel <|
-            --             Animation.update animMsg
             StartLoading ->
                 Return.map (loaderStylel.set True)
                     >> Return.map
                         (\m -> { m | message = "Animation start" })
 
-            -- Return.map <| Monocle.Lens.modify loaderStylel showLoader
             StopLoading ->
                 Return.map (loaderStylel.set False)
                     >> Return.map
@@ -146,12 +150,13 @@ view model =
     div []
         [ text <| "HOME: WIP" ++ toString model
         , div [ class "row" ]
-            [ div [ class "col-sm-6" ]
-                [ L.view incdec1l IncDecMessage IncDec.view model
+            [ div
+                [ class "col-sm-4" ]
+                [ L.viewComponent incdec1Component model
                 ]
             , div
-                [ class "col-sm-6" ]
-                [ L.view incdec2l IncDecMessage IncDec.view model
+                [ class "col-sm-4" ]
+                [ L.viewComponent incdec2Component model
                 ]
             ]
         , div [ class "row" ]
@@ -185,11 +190,7 @@ view model =
             )
         , div [ class "row" ]
             [ div [ class "col-sm-12" ]
-                [ linkTo "/#" [ class "btn btn-primary" ] [ text "Домой" ]
-                , linkTo "/#/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
-                , linkTo "/#/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
-                , linkTo "/#/map" [ class "btn btn-primary" ] [ text "Карта" ]
-                , link "/" "Домой"
+                [ link "/" "Домой"
                 , link "/account" "Пользователь"
                 , link "/login" "Авторизация"
                 , link "/map" "Карта"
@@ -199,35 +200,10 @@ view model =
         ]
 
 
-linkTo : String -> (List (Html.Attribute Msg) -> List (Html Msg) -> Html Msg)
-linkTo pathname =
-    let
-        linkAttrs =
-            clickTo pathname
-    in
-        \attrs contents -> a (List.append attrs linkAttrs) contents
-
-
-
---
---
-
-
-clickTo : String -> List (Html.Attribute Msg)
-clickTo path =
-    [ href path
-      -- , onWithOptions
-      --     "click"
-      --     { stopPropagation = True, preventDefault = True }
-      --     (Json.map (\_ -> NavigateTo path) Json.value)
-    ]
-
-
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Time.every second Tick
-        , L.subs incdec1l IncDecMessage IncDec.subscriptions model
-        , L.subs incdec2l IncDecMessage IncDec.subscriptions model
-          -- , Animation.subscription Animate [ model.loaderStyle ]
+        , L.subsComponent incdec1Component model
+        , L.subsComponent incdec2Component model
         ]
