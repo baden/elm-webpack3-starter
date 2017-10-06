@@ -19,6 +19,7 @@ import LensChild as L
 import Components.Loader exposing (loader)
 import Json.Decode as Json
 import Array exposing (Array)
+import Helper exposing (link)
 
 
 -- import Animation
@@ -188,6 +189,10 @@ view model =
                 , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
                 , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
                 , linkTo "/map" [ class "btn btn-primary" ] [ text "Карта" ]
+                , link "/" "Домой"
+                , link "/account" "Пользователь"
+                , link "/login" "Авторизация"
+                , link "/map" "Карта"
                 ]
             ]
         , loader model.loaderStyle EndAnimation

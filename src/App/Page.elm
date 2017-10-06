@@ -44,9 +44,18 @@ type Msg
     | MapPageMsg MapPage.Msg
 
 
+useHashes : Bool
+useHashes =
+    True
+
+
 parse : Navigation.Location -> Page
 parse location =
-    parsePath pageParser location
+    (if useHashes then
+        parseHash pageParser location
+     else
+        parsePath pageParser location
+    )
         |> Maybe.withDefault NotFound
 
 
