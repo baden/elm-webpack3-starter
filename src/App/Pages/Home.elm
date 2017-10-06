@@ -185,10 +185,10 @@ view model =
             )
         , div [ class "row" ]
             [ div [ class "col-sm-12" ]
-                [ linkTo "/" [ class "btn btn-primary" ] [ text "Домой" ]
-                , linkTo "/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
-                , linkTo "/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
-                , linkTo "/map" [ class "btn btn-primary" ] [ text "Карта" ]
+                [ linkTo "/#" [ class "btn btn-primary" ] [ text "Домой" ]
+                , linkTo "/#/account" [ class "btn btn-primary" ] [ text "Пользователь" ]
+                , linkTo "/#/login" [ class "btn btn-primary" ] [ text "Авторизация" ]
+                , linkTo "/#/map" [ class "btn btn-primary" ] [ text "Карта" ]
                 , link "/" "Домой"
                 , link "/account" "Пользователь"
                 , link "/login" "Авторизация"

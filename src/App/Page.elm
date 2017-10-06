@@ -65,7 +65,7 @@ pageParser =
         [ map Account (s "account")
         , map Login (s "login")
         , map Map (s "map")
-        , map Home (s "")
+        , map Home top
           -- , map System (s "system" </> string)
         ]
 

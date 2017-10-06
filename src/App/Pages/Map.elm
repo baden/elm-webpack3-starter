@@ -64,7 +64,7 @@ view model =
                 [ TimeLine.view model.timeline |> Html.map TimeLineMessage
                 ]
             ]
-        , div [ class "map-debug" ] [ text <| "MAP: WIP" ++ toString model ]
+          -- , div [ class "map-debug" ] [ text <| "MAP: WIP" ++ toString model ]
           -- , div [ class "row" ]
           --     [ div [ class "col-sm-10" ]
           --         [ TimeLine.view model.timeline |> Html.map TimeLineMessage
