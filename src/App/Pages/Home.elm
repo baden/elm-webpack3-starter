@@ -55,9 +55,23 @@ incdec2Component =
         }
 
 
-incdecl : Int -> Lens Model IncDec.Model
-incdecl index =
-    Lens
+
+-- incdecl : Int -> Lens Model IncDec.Model
+-- incdecl index =
+--     Lens
+--         (\m ->
+--             case Array.get index m.incdecs of
+--                 Nothing ->
+--                     Debug.crash "WTF"
+--
+--                 Just indec ->
+--                     indec
+--         )
+--         (\u m -> { m | incdecs = Array.set index u m.incdecs })
+
+
+incdecComponent index =
+    L.component
         (\m ->
             case Array.get index m.incdecs of
                 Nothing ->
@@ -67,6 +81,12 @@ incdecl index =
                     indec
         )
         (\u m -> { m | incdecs = Array.set index u m.incdecs })
+        IncDecMessage
+        { init = IncDec.init
+        , view = IncDec.view
+        , update = IncDec.update
+        , subscriptions = IncDec.subscriptions
+        }
 
 
 loaderStylel : Lens Model Bool
@@ -77,6 +97,8 @@ loaderStylel =
 type Msg
     = Tick Time
     | IncDecMessage (Lens Model IncDec.Model) IncDec.Msg
+      -- | IncDecMessage (L.Lift Model IncDec.Model IncDec.Msg)
+      -- | IncDecMessage (L.Component (Lens Model IncDec.Model))
     | StartLoading
     | StopLoading
     | EndAnimation
@@ -99,8 +121,8 @@ initModel i1 i2 =
 init : ( Model, Cmd Msg )
 init =
     Return.map2 initModel
-        (L.initComponent incdec1Component)
-        (L.initComponent incdec2Component)
+        (L.init incdec1Component)
+        (L.init incdec2Component)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -152,11 +174,11 @@ view model =
         , div [ class "row" ]
             [ div
                 [ class "col-sm-4" ]
-                [ L.viewComponent incdec1Component model
+                [ L.view incdec1Component model
                 ]
             , div
                 [ class "col-sm-4" ]
-                [ L.viewComponent incdec2Component model
+                [ L.view incdec2Component model
                 ]
             ]
         , div [ class "row" ]
@@ -182,7 +204,7 @@ view model =
                     (\i incdec ->
                         div [ class "row" ]
                             [ div [ class "col-sm" ]
-                                [ L.view (incdecl i) IncDecMessage IncDec.view model
+                                [ L.view (incdecComponent i) model
                                 ]
                             ]
                     )
@@ -204,6 +226,6 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Time.every second Tick
-        , L.subsComponent incdec1Component model
-        , L.subsComponent incdec2Component model
+        , L.subscriptions incdec1Component model
+        , L.subscriptions incdec2Component model
         ]
