@@ -70,7 +70,7 @@ update msg =
 
 view : Model -> Html Msg
 view model =
-    div [ class "component jumbotron" ]
+    div [ class "component" ]
         [ div [] [ text "IncDec component" ]
         , button [ type_ "button", class "btn btn-primary", onClick Decrement ] [ text "-" ]
         , div [] [ text (toString model.value) ]
