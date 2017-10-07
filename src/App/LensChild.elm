@@ -42,21 +42,28 @@ component get set lift cb =
 -- init lens mergeBack fx =
 --     fx
 --         |> Return.mapCmd (mergeBack lens)
+-- init :
+--     { e
+--         | cb :
+--             { c
+--                 | init : Return cmsg model
+--             }
+--         , lens : Lens pmod cmod
+--         , lift : String -> Lens pmod cmod -> cmsg -> pmsg
+--     }
+--     -> Return pmsg model
 
 
 init :
-    { e
-        | cb :
-            { c
-                | init : Return cmsg model
-            }
+    { f
+        | cb : { d | init : Return cmsg model, update : c }
         , lens : Lens pmod cmod
-        , lift : Lens pmod cmod -> cmsg -> pmsg
+        , lift : c -> Lens pmod cmod -> cmsg -> pmsg
     }
     -> Return pmsg model
 init c =
     c.cb.init
-        |> Return.mapCmd (c.lift c.lens)
+        |> Return.mapCmd (c.lift c.cb.update c.lens)
 
 
 
@@ -77,13 +84,13 @@ init c =
 --     -> Return pmsg cmod
 -- import Return.Optics exposing (refractl)
 -- refractl do exact some as update
+-- update : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Return cmsg cmod) -> ReturnF pmsg pmod
 
 
-update : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Return cmsg cmod) -> ReturnF pmsg pmod
 update lens mergeBack fx ( model, cmd ) =
     lens.get model
         |> fx
-        |> Return.mapBoth (mergeBack lens) (flip lens.set model)
+        |> Return.mapBoth (mergeBack "back" lens) (flip lens.set model)
         |> Return.command cmd
 
 
@@ -94,8 +101,11 @@ update lens mergeBack fx ( model, cmd ) =
 -- updateP : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Return cmsg cmod) -> ReturnF pmsg pmod
 
 
-updateP lens mergeBack fx effect ( model, cmd ) =
+updateP lens mergeBack fx effect updater ( model, cmd ) =
     let
+        _ =
+            Debug.log "updateP" ( lens, mergeBack, fx, effect, ( model, cmd ) )
+
         cmod =
             lens.get model
 
@@ -103,7 +113,7 @@ updateP lens mergeBack fx effect ( model, cmd ) =
             fx cmod
     in
     ( newCMod, newCmsg )
-        |> Return.mapBoth (mergeBack lens) (flip lens.set model)
+        |> Return.mapBoth (mergeBack updater lens) (flip lens.set model)
         |> Return.command cmd
         |> effect newPmsg
 
@@ -132,31 +142,40 @@ updateP lens mergeBack fx effect ( model, cmd ) =
 --     }
 --     -> pmod
 --     -> Html pmsg
+-- view :
+--     { e
+--         | cb : { d | view : cmod -> Html cmsg }
+--         , lift : String -> Lens pmod cmod -> cmsg -> pmsg
+--         , lens : Lens pmod cmod
+--     }
+--     -> pmod
+--     -> Html pmsg
+-- view :
+--     { f
+--         | cb : { e | update : d, view : b -> Html cmsg }
+--         , lift : d -> { c | get : pmod -> b } -> cmsg -> pmsg
+--         , lens : { c | get : pmod -> b }
+--     }
+--     -> pmod
+--     -> Html pmsg
 
 
-view :
-    { e
-        | cb : { d | view : cmod -> Html cmsg }
-        , lift : Lens pmod cmod -> cmsg -> pmsg
-        , lens : Lens pmod cmod
-    }
-    -> pmod
-    -> Html pmsg
 view c =
     .get c.lens
         >> c.cb.view
-        >> Html.map (c.lift c.lens)
+        >> Html.map (c.lift c.cb.update c.lens)
 
 
 updater lens subMsg pMsg effect =
     updateP lens pMsg (\m -> lens.cb.update subMsg m) effect
 
 
-viewWithEvents e c =
-    .get c.lens
-        -- >> c.cb.view (\e -> Cmd.map e)
-        >> c.cb.view e
-        >> Html.map (c.lift c.lens)
+
+-- viewWithEvents e c =
+--     .get c.lens
+--         -- >> c.cb.view (\e -> Cmd.map e)
+--         >> c.cb.view e
+--         >> Html.map (c.lift c.lens)
 
 
 return r ( m, c ) =
@@ -173,20 +192,20 @@ program m =
 --     .get lens
 --         >> fx
 --         >> Sub.map (mergeBack lens)
+-- subscriptions :
+--     { e
+--         | cb : { d | subscriptions : cmod -> Sub cmsg }
+--         , lift : String -> Lens pmod cmod -> cmsg -> pmsg
+--         , lens : Lens pmod cmod
+--     }
+--     -> pmod
+--     -> Sub pmsg
 
 
-subscriptions :
-    { e
-        | cb : { d | subscriptions : cmod -> Sub cmsg }
-        , lift : Lens pmod cmod -> cmsg -> pmsg
-        , lens : Lens pmod cmod
-    }
-    -> pmod
-    -> Sub pmsg
 subscriptions c =
     .get c.lens
         >> c.cb.subscriptions
-        >> Sub.map (c.lift c.lens)
+        >> Sub.map (c.lift c.cb.update c.lens)
 
 
 updateComponent c subMsg =

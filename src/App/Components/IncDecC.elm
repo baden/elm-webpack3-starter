@@ -3,11 +3,11 @@ module Components.IncDecC
         ( Model
         , Msg
         , ParentMsg(..)
-        , init
         , mainP
-        , subscriptions
-        , update
-        , view
+          -- , init
+          -- , subscriptions
+          -- , update
+          -- , view
         )
 
 -- import Json.Decode as Json
@@ -77,6 +77,7 @@ send msg =
 
 init : ( Model, Cmd Msg )
 init =
+    -- Return.singleton defaultModel
     Return.return defaultModel (send Increment)
 
 
@@ -88,25 +89,26 @@ update : Msg -> Model -> ( Model, Cmd Msg, Maybe ParentMsg )
 update msg =
     case msg of
         Increment ->
-            L.return Nothing
-                << Return.singleton
-                << Lens.modify value ((+) 1)
+            Lens.modify value ((+) 1)
+                >> Return.singleton
+                >> L.return Nothing
 
         Decrement ->
-            L.return Nothing
-                << Return.singleton
-                << Lens.modify value ((+) -1)
+            Lens.modify value ((+) -1)
+                >> Return.singleton
+                >> L.return Nothing
 
         Tick newTime ->
-            L.return Nothing
-                << Return.singleton
-                << counter.set newTime
+            counter.set newTime
+                >> Return.singleton
+                >> L.return Nothing
 
         ToParent ->
-            L.return (Just IncDecC_Boo)
-                << Return.singleton
+            Return.singleton
+                >> L.return (Just IncDecC_Boo)
 
 
+view : Model -> Html Msg
 view model =
     div [ class "component" ]
         [ div [] [ text "IncDecC component" ]
@@ -136,6 +138,12 @@ subscriptions =
             ]
 
 
+mainP :
+    { init : ( Model, Cmd Msg )
+    , subscriptions : Model -> Sub Msg
+    , update : Msg -> Model -> ( Model, Cmd Msg, Maybe ParentMsg )
+    , view : Model -> Html Msg
+    }
 mainP =
     L.program
         { init = init
