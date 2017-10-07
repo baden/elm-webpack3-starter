@@ -8,23 +8,25 @@ module Pages.Home
         , view
         )
 
+import Array exposing (Array)
 import Components.IncDec as IncDec
-import Html exposing (Html, div, text, button, a)
-import Html.Attributes exposing (class, type_, href)
+import Components.IncDecC as IncDecC
+import Components.Loader exposing (loader)
+import Helper exposing (link)
+import Html exposing (Html, a, button, div, text)
+import Html.Attributes exposing (class, href, type_)
 import Html.Events exposing (onClick, onWithOptions)
-import Time exposing (Time, second)
+import LensChild as L
 import Monocle.Lens exposing (Lens)
 import Return exposing (Return)
-import LensChild as L
-import Components.Loader exposing (loader)
-import Array exposing (Array)
-import Helper exposing (link)
+import Time exposing (Time, second)
 
 
 type alias Model =
     { counter : Time
     , incdec1 : IncDec.Model
     , incdec2 : IncDec.Model
+    , incdecC : IncDecC.Model
     , incdecs : Array IncDec.Model
     , loaderStyle : Bool
     , message : String
@@ -55,19 +57,16 @@ incdec2Component =
         }
 
 
-
--- incdecl : Int -> Lens Model IncDec.Model
--- incdecl index =
---     Lens
---         (\m ->
---             case Array.get index m.incdecs of
---                 Nothing ->
---                     Debug.crash "WTF"
---
---                 Just indec ->
---                     indec
---         )
---         (\u m -> { m | incdecs = Array.set index u m.incdecs })
+incdecCComponent =
+    L.component
+        .incdecC
+        (\u m -> { m | incdecC = u })
+        IncDecCMessage
+        { init = IncDecC.init
+        , view = IncDecC.view
+        , update = IncDecC.update
+        , subscriptions = IncDecC.subscriptions
+        }
 
 
 incdecComponent index =
@@ -97,6 +96,7 @@ loaderStylel =
 type Msg
     = Tick Time
     | IncDecMessage (Lens Model IncDec.Model) IncDec.Msg
+    | IncDecCMessage (Lens Model IncDecC.Model) IncDecC.Msg
       -- | IncDecMessage (L.Lift Model IncDec.Model IncDec.Msg)
       -- | IncDecMessage (L.Component (Lens Model IncDec.Model))
     | StartLoading
@@ -104,14 +104,16 @@ type Msg
     | EndAnimation
     | AddComp
     | RemoveComp
+      -- | SubCmd
     | NoOp
 
 
-initModel : IncDec.Model -> IncDec.Model -> Model
-initModel i1 i2 =
+initModel : IncDec.Model -> IncDec.Model -> IncDecC.Model -> Model
+initModel i1 i2 i3 =
     { counter = 0
     , incdec1 = i1
     , incdec2 = i2
+    , incdecC = i3
     , incdecs = Array.empty
     , loaderStyle = False
     , message = "Initial"
@@ -120,47 +122,58 @@ initModel i1 i2 =
 
 init : ( Model, Cmd Msg )
 init =
-    Return.map2 initModel
+    Return.map3 initModel
         (L.init incdec1Component)
         (L.init incdec2Component)
+        (L.init incdecCComponent)
+
+
+
+-- (L.init incdecCComponent)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg =
     Return.singleton
-        >> case msg of
-            NoOp ->
-                Return.zero
+        >> (case msg of
+                NoOp ->
+                    Return.zero
 
-            Tick newTime ->
-                Return.map <| \model -> { model | counter = newTime }
+                Tick newTime ->
+                    Return.map <| \model -> { model | counter = newTime }
 
-            IncDecMessage lens subMsg ->
-                L.update lens IncDecMessage <| IncDec.update subMsg
+                IncDecMessage lens subMsg ->
+                    IncDec.update subMsg
+                        |> L.update lens IncDecMessage
 
-            StartLoading ->
-                Return.map (loaderStylel.set True)
-                    >> Return.map
-                        (\m -> { m | message = "Animation start" })
+                IncDecCMessage lens subMsg ->
+                    IncDecC.update subMsg
+                        |> L.update lens IncDecCMessage
 
-            StopLoading ->
-                Return.map (loaderStylel.set False)
-                    >> Return.map
-                        (\m -> { m | message = "Animation start" })
+                StartLoading ->
+                    Return.map (loaderStylel.set True)
+                        >> Return.map
+                            (\m -> { m | message = "Animation start" })
 
-            EndAnimation ->
-                Return.map <| \m -> { m | message = "Animation done" }
+                StopLoading ->
+                    Return.map (loaderStylel.set False)
+                        >> Return.map
+                            (\m -> { m | message = "Animation start" })
 
-            AddComp ->
-                let
-                    ( incdec, _ ) =
-                        IncDec.init
-                in
+                EndAnimation ->
+                    Return.map <| \m -> { m | message = "Animation done" }
+
+                AddComp ->
+                    let
+                        ( incdec, _ ) =
+                            IncDec.init
+                    in
                     Return.map <|
                         \m -> { m | incdecs = Array.push incdec m.incdecs }
 
-            RemoveComp ->
-                Return.zero
+                RemoveComp ->
+                    Return.zero
+           )
 
 
 
@@ -179,6 +192,10 @@ view model =
             , div
                 [ class "col-sm-4" ]
                 [ L.view incdec2Component model
+                ]
+            , div
+                [ class "col-sm-4" ]
+                [ L.view incdecCComponent model
                 ]
             ]
         , div [ class "row" ]
@@ -228,4 +245,5 @@ subscriptions model =
         [ Time.every second Tick
         , L.subscriptions incdec1Component model
         , L.subscriptions incdec2Component model
+        , L.subscriptions incdecCComponent model
         ]

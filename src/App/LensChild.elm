@@ -1,8 +1,8 @@
 module LensChild exposing (..)
 
+import Html exposing (Html)
 import Monocle.Lens exposing (Lens)
 import Return exposing (Return, ReturnF)
-import Html exposing (Html)
 
 
 type alias Component get cmsg set pmsg cb =
@@ -124,6 +124,12 @@ view :
 view c =
     .get c.lens
         >> c.cb.view
+        >> Html.map (c.lift c.lens)
+
+
+viewWithEvents e c =
+    .get c.lens
+        >> c.cb.view e
         >> Html.map (c.lift c.lens)
 
 
