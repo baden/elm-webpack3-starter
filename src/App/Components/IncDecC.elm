@@ -14,6 +14,7 @@ module Components.IncDecC
 import Html exposing (Attribute, Html, button, div, text)
 import Html.Attributes exposing (class, type_)
 import Html.Events exposing (onClick, targetValue)
+import LensChild as L
 import Monocle.Lens as Lens exposing (Lens)
 import Return exposing (Return)
 import Task
@@ -51,7 +52,7 @@ type Msg
     = Increment
     | Decrement
     | Tick Time
-    | ToParent String
+    | ToParent
 
 
 type ParentMsg
@@ -83,30 +84,26 @@ init =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg, Maybe ParentMsg )
-update msg model =
+update msg =
     case msg of
         Increment ->
-            Lens.modify value ((+) 1) model
-                |> Return.singleton
-                |> (\( m, c ) -> ( m, c, Nothing ))
+            L.return Nothing
+                << Return.singleton
+                << Lens.modify value ((+) 1)
 
         Decrement ->
-            Lens.modify value ((+) -1) model
-                |> Return.singleton
-                |> (\( m, c ) -> ( m, c, Nothing ))
+            L.return Nothing
+                << Return.singleton
+                << Lens.modify value ((+) -1)
 
         Tick newTime ->
-            counter.set newTime model
-                |> Return.singleton
-                |> (\( m, c ) -> ( m, c, Nothing ))
+            L.return Nothing
+                << Return.singleton
+                << counter.set newTime
 
-        ToParent v ->
-            let
-                _ =
-                    Debug.log "ToParent" v
-            in
-            Return.singleton model
-                |> (\( m, c ) -> ( m, c, Just IncDecC_Boo ))
+        ToParent ->
+            L.return (Just IncDecC_Boo)
+                << Return.singleton
 
 
 
@@ -115,18 +112,14 @@ update msg model =
 -- view : (a -> b) -> Model -> Html Msg
 
 
-view tagger model =
-    let
-        _ =
-            Debug.log "IncDecC.view" ( tagger, model )
-    in
+view model =
     div [ class "component" ]
         [ div [] [ text "IncDecC component" ]
         , button [ type_ "button", class "btn btn-primary", onClick Decrement ] [ text "-" ]
         , div [] [ text (toString model.value) ]
         , button [ type_ "button", class "btn btn-primary", onClick Increment ] [ text "+" ]
         , div [] [ text (toString model.counter) ]
-        , button [ type_ "button", class "btn btn-primary", onClick (ToParent tagger) ] [ text "x" ]
+        , button [ type_ "button", class "btn btn-primary", onClick ToParent ] [ text "x" ]
 
         -- , button tagger [ text "x" ]
         -- , Html.input [ onChange (SubCmd tagger) ]

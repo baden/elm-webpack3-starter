@@ -155,6 +155,10 @@ viewWithEvents e c =
         >> Html.map (c.lift c.lens)
 
 
+return r ( m, c ) =
+    ( m, c, r )
+
+
 
 -- subs : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Sub cmsg) -> pmod -> Sub pmsg
 -- subs lens mergeBack fx =

@@ -190,7 +190,8 @@ update msg =
                         _ =
                             Debug.log "SubCmd" 0
                     in
-                    Return.zero
+                    Return.map
+                        (\m -> { m | message = "Best solution!" })
            )
 
 
@@ -214,7 +215,7 @@ view model =
             , div
                 [ class "col-sm-4" ]
                 -- [ L.viewWithEvents SubCmd incdecCComponent model
-                [ L.viewWithEvents "boo" incdecCComponent model
+                [ L.view incdecCComponent model
 
                 -- [ L.viewWithEvents [ type_ "button", class "btn btn-primary", onClick StartLoading ] incdecCComponent model
                 ]
