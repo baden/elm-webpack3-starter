@@ -88,6 +88,27 @@ update lens mergeBack fx ( model, cmd ) =
 
 
 
+-- dropP : ( mod, cmd, pcmd ) -> ( mod, cmd )
+-- dropP ( m, c, p ) =
+--     ( m, c )
+-- updateP : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Return cmsg cmod) -> ReturnF pmsg pmod
+
+
+updateP lens mergeBack fx effect ( model, cmd ) =
+    let
+        cmod =
+            lens.get model
+
+        ( newCMod, newCmsg, newPmsg ) =
+            fx cmod
+    in
+    ( newCMod, newCmsg )
+        |> Return.mapBoth (mergeBack lens) (flip lens.set model)
+        |> Return.command cmd
+        |> effect newPmsg
+
+
+
 -- view :
 --     Lens pmod cmod
 --     -> (Lens pmod cmod -> cmsg -> pmsg)
@@ -129,6 +150,7 @@ view c =
 
 viewWithEvents e c =
     .get c.lens
+        -- >> c.cb.view (\e -> Cmd.map e)
         >> c.cb.view e
         >> Html.map (c.lift c.lens)
 

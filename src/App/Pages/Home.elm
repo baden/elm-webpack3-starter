@@ -104,7 +104,7 @@ type Msg
     | EndAnimation
     | AddComp
     | RemoveComp
-      -- | SubCmd
+    | SubCmd
     | NoOp
 
 
@@ -132,6 +132,16 @@ init =
 -- (L.init incdecCComponent)
 
 
+incdecC_effect : Maybe IncDecC.ParentMsg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+incdecC_effect msg =
+    case msg of
+        Nothing ->
+            Return.map (\m -> { m | message = "Not here" })
+
+        Just IncDecC.IncDecC_Boo ->
+            Return.map (\m -> { m | message = "Boo" })
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg =
     Return.singleton
@@ -140,15 +150,14 @@ update msg =
                     Return.zero
 
                 Tick newTime ->
-                    Return.map <| \model -> { model | counter = newTime }
+                    Return.map
+                        (\model -> { model | counter = newTime })
 
                 IncDecMessage lens subMsg ->
-                    IncDec.update subMsg
-                        |> L.update lens IncDecMessage
+                    L.update lens IncDecMessage (\m -> IncDec.update subMsg m)
 
                 IncDecCMessage lens subMsg ->
-                    IncDecC.update subMsg
-                        |> L.update lens IncDecCMessage
+                    L.updateP lens IncDecCMessage (\m -> IncDecC.update subMsg m) incdecC_effect
 
                 StartLoading ->
                     Return.map (loaderStylel.set True)
@@ -161,17 +170,26 @@ update msg =
                             (\m -> { m | message = "Animation start" })
 
                 EndAnimation ->
-                    Return.map <| \m -> { m | message = "Animation done" }
+                    Return.map
+                        (\m -> { m | message = "Animation done" })
 
                 AddComp ->
                     let
+                        -- TODO: Think about cmd
                         ( incdec, _ ) =
                             IncDec.init
                     in
-                    Return.map <|
-                        \m -> { m | incdecs = Array.push incdec m.incdecs }
+                    Return.map
+                        (\m -> { m | incdecs = Array.push incdec m.incdecs })
 
                 RemoveComp ->
+                    Return.zero
+
+                SubCmd ->
+                    let
+                        _ =
+                            Debug.log "SubCmd" 0
+                    in
                     Return.zero
            )
 
@@ -195,7 +213,10 @@ view model =
                 ]
             , div
                 [ class "col-sm-4" ]
-                [ L.view incdecCComponent model
+                -- [ L.viewWithEvents SubCmd incdecCComponent model
+                [ L.viewWithEvents "boo" incdecCComponent model
+
+                -- [ L.viewWithEvents [ type_ "button", class "btn btn-primary", onClick StartLoading ] incdecCComponent model
                 ]
             ]
         , div [ class "row" ]
@@ -242,8 +263,8 @@ view model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Time.every second Tick
-        , L.subscriptions incdec1Component model
+        [ --Time.every second Tick
+          L.subscriptions incdec1Component model
         , L.subscriptions incdec2Component model
         , L.subscriptions incdecCComponent model
         ]

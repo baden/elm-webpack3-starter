@@ -3,9 +3,9 @@ module Components.IncDec exposing (Model, Msg, init, subscriptions, update, view
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, type_)
 import Html.Events exposing (onClick)
-import Task
 import Monocle.Lens as Lens exposing (Lens)
 import Return exposing (Return)
+import Task
 import Time exposing (Time, second)
 
 
@@ -57,15 +57,16 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg =
     Return.singleton
-        << case msg of
-            Increment ->
-                Lens.modify value ((+) 1)
+        << (case msg of
+                Increment ->
+                    Lens.modify value ((+) 1)
 
-            Decrement ->
-                Lens.modify value ((+) -1)
+                Decrement ->
+                    Lens.modify value ((+) -1)
 
-            Tick newTime ->
-                counter.set newTime
+                Tick newTime ->
+                    counter.set newTime
+           )
 
 
 view : Model -> Html Msg
@@ -83,5 +84,5 @@ subscriptions : Model -> Sub Msg
 subscriptions =
     always <|
         Sub.batch
-            [ Time.every second Tick
+            [--Time.every second Tick
             ]
