@@ -101,10 +101,13 @@ update lens mergeBack fx ( model, cmd ) =
 -- updateP : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Return cmsg cmod) -> ReturnF pmsg pmod
 
 
-updateP lens mergeBack fx effect updater ( model, cmd ) =
+updateP updater lens subMsg mergeBack effect ( model, cmd ) =
     let
         _ =
             Debug.log "updateP" ( lens, mergeBack, fx, effect, ( model, cmd ) )
+
+        fx =
+            \m -> updater subMsg m
 
         cmod =
             lens.get model
@@ -166,11 +169,9 @@ view c =
         >> Html.map (c.lift c.cb.update c.lens)
 
 
-updater lens subMsg pMsg effect =
-    updateP lens pMsg (\m -> lens.cb.update subMsg m) effect
 
-
-
+-- updater lens subMsg pMsg effect =
+--     updateP lens pMsg (\m -> lens.cb.update subMsg m) effect
 -- viewWithEvents e c =
 --     .get c.lens
 --         -- >> c.cb.view (\e -> Cmd.map e)

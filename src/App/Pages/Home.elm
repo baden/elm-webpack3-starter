@@ -169,15 +169,7 @@ update msg =
                 -- IncDecMessage lens subMsg ->
                 --     L.update lens IncDecMessage (\m -> IncDec.update subMsg m)
                 IncDecCMessage u lens subMsg ->
-                    let
-                        -- updater =
-                        --     \lens subMsg pMsg effect ->
-                        --         L.updateP lens pMsg (\m -> u subMsg m) effect u
-                        _ =
-                            Debug.log "updater" ( lens, subMsg, u )
-                    in
-                    -- updater lens subMsg IncDecCMessage incdecC_effect
-                    L.updateP lens IncDecCMessage (\m -> u subMsg m) incdecC_effect u
+                    L.updateP u lens subMsg IncDecCMessage incdecC_effect
 
                 -- L.updateP lens IncDecCMessage (\m -> IncDecC.update subMsg m) incdecC_effect
                 StartLoading ->
