@@ -62,11 +62,15 @@ incdecCComponent =
         .incdecC
         (\u m -> { m | incdecC = u })
         IncDecCMessage
-        { init = IncDecC.init
-        , view = IncDecC.view
-        , update = IncDecC.update
-        , subscriptions = IncDecC.subscriptions
-        }
+        IncDecC.mainP
+
+
+
+-- { init = IncDecC.init
+-- , view = IncDecC.view
+-- , update = IncDecC.update
+-- , subscriptions = IncDecC.subscriptions
+-- }
 
 
 incdecComponent index =
@@ -157,8 +161,17 @@ update msg =
                     L.update lens IncDecMessage (\m -> IncDec.update subMsg m)
 
                 IncDecCMessage lens subMsg ->
-                    L.updateP lens IncDecCMessage (\m -> IncDecC.update subMsg m) incdecC_effect
+                    let
+                        updater =
+                            \lens subMsg pMsg effect ->
+                                L.updateP lens pMsg (\m -> IncDecC.update subMsg m) effect
 
+                        _ =
+                            Debug.log "updater" ( lens, subMsg )
+                    in
+                    updater lens subMsg IncDecCMessage incdecC_effect
+
+                -- L.updateP lens IncDecCMessage (\m -> IncDecC.update subMsg m) incdecC_effect
                 StartLoading ->
                     Return.map (loaderStylel.set True)
                         >> Return.map

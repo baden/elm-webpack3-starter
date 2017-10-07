@@ -148,6 +148,10 @@ view c =
         >> Html.map (c.lift c.lens)
 
 
+updater lens subMsg pMsg effect =
+    updateP lens pMsg (\m -> lens.cb.update subMsg m) effect
+
+
 viewWithEvents e c =
     .get c.lens
         -- >> c.cb.view (\e -> Cmd.map e)
@@ -157,6 +161,10 @@ viewWithEvents e c =
 
 return r ( m, c ) =
     ( m, c, r )
+
+
+program m =
+    m
 
 
 

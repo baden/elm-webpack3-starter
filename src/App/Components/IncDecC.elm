@@ -4,6 +4,7 @@ module Components.IncDecC
         , Msg
         , ParentMsg(..)
         , init
+        , mainP
         , subscriptions
         , update
         , view
@@ -106,12 +107,6 @@ update msg =
                 << Return.singleton
 
 
-
--- view : (() -> msg) -> Model -> Html Msg
--- view : a -> Model -> Html (Msg pmsg)
--- view : (a -> b) -> Model -> Html Msg
-
-
 view model =
     div [ class "component" ]
         [ div [] [ text "IncDecC component" ]
@@ -139,3 +134,12 @@ subscriptions =
         Sub.batch
             [--Time.every second Tick
             ]
+
+
+mainP =
+    L.program
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
