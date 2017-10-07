@@ -87,10 +87,14 @@ init c =
 -- update : Lens pmod cmod -> (Lens pmod cmod -> cmsg -> pmsg) -> (cmod -> Return cmsg cmod) -> ReturnF pmsg pmod
 
 
-update lens mergeBack fx ( model, cmd ) =
+update updater lens subMsg mergeBack ( model, cmd ) =
+    let
+        fx =
+            \m -> updater subMsg m
+    in
     lens.get model
         |> fx
-        |> Return.mapBoth (mergeBack "back" lens) (flip lens.set model)
+        |> Return.mapBoth (mergeBack updater lens) (flip lens.set model)
         |> Return.command cmd
 
 
