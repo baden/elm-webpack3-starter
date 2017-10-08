@@ -1,0 +1,82 @@
+.login-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1488c6;
+    color: white;
+    fill: white;
+    font-family: Open Sans,sans-serif;
+
+    form {
+        // background-color: lightgreen;
+        padding: 150px 10px 0 10px;
+        max-width: 300px;
+        margin: 0 auto;
+        height: 100%;
+
+        .login-form-group {
+            padding-top: 10px;
+            margin-bottom: 25px;
+            position: relative;
+
+            div {
+                position: absolute;
+                opacity: 0.6;
+                color: white;
+                transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+                bottom: 2px;
+            }
+
+            input {
+                padding: 0px;
+                position: relative;
+                width: 100%;
+                border: none;
+                border-bottom: 1px solid white;
+                outline: none;
+                background-color: rgba(0, 0, 0, 0);
+                color: white;
+                cursor: initial;
+                font-style: inherit;
+                font-variant: inherit;
+                font-weight: inherit;
+                font-stretch: inherit;
+                font-size: inherit;
+                line-height: inherit;
+                font-family: inherit;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                height: 100%;
+            }
+
+            button {
+                float: right;
+                border-color: #fff;
+                background-color: #fff;
+                color: #1488c6;
+                outline: 0;
+                border-style: solid;
+                text-align: center;
+                font-weight: 700;
+                transition: background-color .4s cubic-bezier(.25,.8,.25,1),border-color .6s cubic-bezier(.25,.8,.25,1);
+                padding: 10px 16px;
+                margin: 6px 8px;
+                border-width: 2px;
+                border-radius: 2px;
+                font-size: 14px;
+
+                &:hover {
+                    background-color: hsla(0,0%,100%,.85);
+                    border-color: hsla(0,0%,100%,.85);
+                }
+
+            }
+
+
+        }
+
+
+    }
+
+}

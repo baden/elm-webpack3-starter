@@ -1,5 +1,5 @@
 require('./all.scss');
-require('bootstrap-css');
+// require('bootstrap-css');
 var Elm = require('./App/App.elm');
 // import Elm from './App/App.elm';
 
