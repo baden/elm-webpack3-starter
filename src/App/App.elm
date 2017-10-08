@@ -4,15 +4,19 @@ import Html exposing (Html, a, button, div, h1, text)
 import Html.Attributes exposing (class, href, title, type_)
 import Html.Events exposing (onClick, onWithOptions)
 import Json.Decode as Json
+import Monocle.Lens exposing (Lens)
 import Navigation
 import Page
+import Process
 import Return exposing (Return)
-import Monocle.Lens exposing (Lens)
 import Return.Optics exposing (refractl)
+import Task
+import Time exposing (Time)
 
 
 type alias Model =
     { page : Page.Model
+    , blur : Bool
     }
 
 
@@ -28,6 +32,7 @@ type Msg
       -- | HomeClicked
       -- | AccountClicked
     | NavigateTo String
+    | Delayed
 
 
 
@@ -47,13 +52,25 @@ init location =
 
         initModel =
             { page = pageModel
+            , blur = True
             }
+
+        _ =
+            Debug.log "App.init" 0
     in
-        Return.singleton initModel
-            |> Return.command pageCmd
+    Return.singleton initModel
+        |> Return.command pageCmd
+        |> Return.command (delay 100 Delayed)
+
+
+delay : Time -> msg -> Cmd msg
+delay time msg =
+    Process.sleep time
+        |> Task.perform (always msg)
 
 
 
+-- unBlur :
 -- TODO: Restore lost !!!
 -- Return.command
 -- , Cmd.batch [ Cmd.map IncDecMessage incdecCmd ]
@@ -66,23 +83,36 @@ update msg =
     --         Debug.log "update" msg
     -- in
     Return.singleton
-        >> case msg of
-            NoOp ->
-                Return.zero
+        >> (case msg of
+                NoOp ->
+                    Return.zero
 
-            UrlChange location ->
-                refractl pagel PageMsg <| always (Page.init location)
+                UrlChange location ->
+                    refractl pagel PageMsg <| always (Page.init location)
 
-            PageMsg pageMsg ->
-                refractl pagel PageMsg <| Page.update pageMsg
+                PageMsg pageMsg ->
+                    refractl pagel PageMsg <| Page.update pageMsg
 
-            NavigateTo pathname ->
-                Return.command <| Navigation.newUrl pathname
+                NavigateTo pathname ->
+                    Return.command <| Navigation.newUrl pathname
+
+                Delayed ->
+                    Return.map (\m -> { m | blur = False })
+           )
 
 
 view : Model -> Html Msg
 view model =
-    Page.view model.page |> Html.map PageMsg
+    div
+        [ class
+            (if model.blur then
+                "blur"
+             else
+                "noblur"
+            )
+        ]
+        [ Page.view model.page |> Html.map PageMsg
+        ]
 
 
 
@@ -115,7 +145,7 @@ linkTo pathname =
         linkAttrs =
             clickTo pathname
     in
-        \attrs contents -> a (List.append attrs linkAttrs) contents
+    \attrs contents -> a (List.append attrs linkAttrs) contents
 
 
 clickTo : String -> List (Html.Attribute Msg)

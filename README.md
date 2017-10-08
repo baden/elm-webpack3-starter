@@ -62,5 +62,20 @@ npm run build
 * More functional-style https://github.com/CaronaBoard/caronaboard
 * Use css3 animation events (webkitAnimationEnd, animationend, transitionend)
 (https://github.com/xarvh/elm-dropdown-menu/blob/2098e208c20afdaaa3391bbaf7b1df7d07770d05/src/DropdownMenu.elm)
+* gzip static content. Use ngx_http_gzip_static_module.
+
+## Icons tileset example
+
+1. Use svg-inline-loader.
+2. Load svg, insert to Page
+3. Create use-links when needed.
+
+Usage example links:
+
+* https://github.com/lukewestby/ellie/blob/master/package.json
+* https://github.com/lukewestby/ellie/blob/5a5f8130709a558a2df2bef353f8e2619a2338f0/webpack.dev.config.js
+* https://github.com/lukewestby/ellie/blob/5a5f8130709a558a2df2bef353f8e2619a2338f0/client/src/Pages/Embed/index.js
+* https://github.com/lukewestby/ellie/blob/5a5f8130709a558a2df2bef353f8e2619a2338f0/client/src/Ellie/Ui/Icon/Loader.js
+* https://github.com/lukewestby/ellie/blob/5a5f8130709a558a2df2bef353f8e2619a2338f0/client/src/Ellie/Ui/Icon.elm
 
 Fix SVG attributes?

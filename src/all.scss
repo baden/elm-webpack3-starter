@@ -4,6 +4,20 @@ body {
   overflow-y: scroll;
 }
 
+.blur {
+    -webkit-filter: blur(30px);
+                filter: blur(30px);
+
+    transition: filter 1s ease-in-out;
+
+}
+
+.noblur {
+
+    transition: filter 1s ease-in-out;
+
+}
+
 .component {
   padding: 10px;
   color: blue;
