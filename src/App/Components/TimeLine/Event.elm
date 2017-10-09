@@ -1,7 +1,7 @@
 module Components.TimeLine.Event exposing (event_duration)
 
-import Html exposing (Html, div, text, i, hr, span)
-import Html.Attributes exposing (class, tabindex, attribute, title)
+import Html exposing (Html, div, span, text)
+import Html.Attributes exposing (attribute, class, tabindex)
 
 
 event_duration : ( String, String ) -> Html msg

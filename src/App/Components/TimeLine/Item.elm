@@ -2,16 +2,16 @@ module Components.TimeLine.Item
     exposing
         ( item
         , item_content
-        , item_title
-        , item_subtitle
-        , item_title_content
         , item_event
+        , item_subtitle
+        , item_title
+        , item_title_content
         )
 
-import Html exposing (Html, div, a, text, i, span)
-import Html.Attributes exposing (class, attribute, tabindex, title, href)
-import Html.Events exposing (onClick)
 import Components.TimeLine.Event exposing (event_duration)
+import Html exposing (Html, a, div, span, text)
+import Html.Attributes exposing (attribute, class, href, tabindex)
+import Html.Events exposing (onClick)
 
 
 item : String -> Maybe msg -> List (Html msg) -> Html msg
@@ -54,14 +54,24 @@ item_subtitle t =
 
 item_title_content : List (Html msg) -> Html msg
 item_title_content =
-    div [ class "edit-dialog-select moment-edit-control place-visit timeline-item-title-content", attribute "role" "button", tabindex 0 ]
+    div
+        [ class "edit-dialog-select moment-edit-control place-visit timeline-item-title-content"
+        , attribute "role" "button"
+        , tabindex 0
+        ]
 
 
 item_event : ( String, ( String, String ) ) -> Html msg
 item_event ( v, dur ) =
     div [ class "timeline-item-text child-place-visit" ]
-        [ a [ class "child-place-visit-content", href "/maps/place//data=!4m2!3m1!1s0x40dbdb09a36b4a29:0x8a3bd0a3bedb89d3?authuser=0&hl=ru&gl=ua" ]
-            [ div [ class "child-place-visit-icon", attribute "style" "background-image:url(https://maps.gstatic.com/mapsactivities/icons/poi_icons/30_visited/tree_2x.png)" ]
+        [ a
+            [ class "child-place-visit-content"
+            , href "/maps/place/tbd"
+            ]
+            [ div
+                [ class "child-place-visit-icon"
+                , attribute "style" "background-image:url(https://maps.gstatic.com/mapsactivities/icons/poi_icons/30_visited/tree_2x.png)"
+                ]
                 []
             , span [ class "child-place-visit-title" ]
                 [ text v ]

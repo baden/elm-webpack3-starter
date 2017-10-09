@@ -8,8 +8,8 @@ module Pages.Login
         , view
         )
 
-import Html exposing (Html, button, dd, div, dl, dt, form, h1, h2, input, label, p, small, text)
-import Html.Attributes exposing (attribute, class, for, id, placeholder, type_, value)
+import Html exposing (Html, button, div, form, h2, input, text)
+import Html.Attributes exposing (class, type_, value)
 import Html.Events exposing (onInput)
 
 
@@ -74,11 +74,6 @@ view model =
                 ]
             ]
         ]
-
-
-ariaDescribedby : String -> Html.Attribute Msg
-ariaDescribedby =
-    attribute "ariaDescribedby"
 
 
 subscriptions : Model -> Sub Msg

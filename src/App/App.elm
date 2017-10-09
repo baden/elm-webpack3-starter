@@ -1,9 +1,7 @@
-module App exposing (..)
+module App exposing (main)
 
-import Html exposing (Html, a, button, div, h1, text)
-import Html.Attributes exposing (class, href, title, type_)
-import Html.Events exposing (onClick, onWithOptions)
-import Json.Decode as Json
+import Html exposing (Html, div)
+import Html.Attributes exposing (class)
 import Monocle.Lens exposing (Lens)
 import Navigation
 import Page
@@ -137,36 +135,32 @@ view model =
 --         ]
 --     , loader model.loaderStyle
 --     ]
-
-
-linkTo : String -> (List (Html.Attribute Msg) -> List (Html Msg) -> Html Msg)
-linkTo pathname =
-    let
-        linkAttrs =
-            clickTo pathname
-    in
-    \attrs contents -> a (List.append attrs linkAttrs) contents
-
-
-clickTo : String -> List (Html.Attribute Msg)
-clickTo path =
-    [ href path
-    , onWithOptions
-        "click"
-        { stopPropagation = True, preventDefault = True }
-        (Json.map (\_ -> NavigateTo path) Json.value)
-    ]
-
-
-link : String -> msg -> Html msg
-link label msg =
-    div
-        [ class "link_control"
-        , title "Account"
-        , onClick msg
-        ]
-        [ div [] [ text label ]
-        ]
+-- linkTo : String -> (List (Html.Attribute Msg) -> List (Html Msg) -> Html Msg)
+-- linkTo pathname =
+--     let
+--         linkAttrs =
+--             clickTo pathname
+--     in
+--     \attrs contents -> a (List.append attrs linkAttrs) contents
+--
+--
+-- clickTo : String -> List (Html.Attribute Msg)
+-- clickTo path =
+--     [ href path
+--     , onWithOptions
+--         "click"
+--         { stopPropagation = True, preventDefault = True }
+--         (Json.map (\_ -> NavigateTo path) Json.value)
+--     ]
+-- link : String -> msg -> Html msg
+-- link label msg =
+--     div
+--         [ class "link_control"
+--         , title "Account"
+--         , onClick msg
+--         ]
+--         [ div [] [ text label ]
+--         ]
 
 
 subscriptions : Model -> Sub Msg

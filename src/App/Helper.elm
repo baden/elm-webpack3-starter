@@ -1,7 +1,7 @@
 module Helper exposing (link)
 
 import Html exposing (Html, a, text)
-import Html.Attributes exposing (style, href)
+import Html.Attributes exposing (href, style)
 
 
 link : String -> String -> Html msg

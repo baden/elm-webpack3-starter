@@ -1,13 +1,13 @@
-module Components.TimeLine.MoveEvent exposing (moveEvent, MoveEvent)
+module Components.TimeLine.MoveEvent exposing (MoveEvent, moveEvent)
 
-import Html exposing (Html, div, text, i, hr, span, a)
-import Html.Attributes exposing (class, tabindex, attribute, title, href)
-import Svg exposing (svg, line)
-import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
-import Components.TimeLine.Event exposing (event_duration)
 import Components.TimeLine.ActivityIcon
-import Components.TimeLine.Item exposing (item, item_content, item_title, item_title_content, item_event)
+import Components.TimeLine.Event exposing (event_duration)
 import Components.TimeLine.Icons as I
+import Components.TimeLine.Item exposing (item, item_content, item_event, item_title, item_title_content)
+import Html exposing (Html, div, hr, span, text)
+import Html.Attributes exposing (attribute, class)
+import Svg exposing (line, svg)
+import Svg.Attributes as S exposing (x1, x2, y1, y2)
 
 
 type alias MoveEvent =
@@ -29,25 +29,25 @@ moveEvent ( ( event, value ), duration, events ) =
                         item_event ( t, ( d, "" ) )
                     )
     in
-        div []
-            [ div [ class "activity-segment-outer" ]
-                [ (item "place-history-moment-outer" Nothing)
-                    [ activity_svg_line
-                    , activity_add_contol
-                    , (item_content True)
-                        ((div []
-                            [ item_title
-                                [ activity_place ( event, value )
-                                , event_duration ( duration, "" )
-                                ]
+    div []
+        [ div [ class "activity-segment-outer" ]
+            [ item "place-history-moment-outer"
+                Nothing
+                [ activity_svg_line
+                , activity_add_contol
+                , item_content True
+                    (div []
+                        [ item_title
+                            [ activity_place ( event, value )
+                            , event_duration ( duration, "" )
                             ]
-                         )
-                            :: visits
-                        )
-                    , hr [ class "moment-divider" ] []
-                    ]
+                        ]
+                        :: visits
+                    )
+                , hr [ class "moment-divider" ] []
                 ]
             ]
+        ]
 
 
 
@@ -57,7 +57,7 @@ moveEvent ( ( event, value ), duration, events ) =
 activity_place : ( String, String ) -> Html msg
 activity_place ( title, distance ) =
     item_title_content
-        [ Components.TimeLine.ActivityIcon.icon Components.TimeLine.ActivityIcon.ActivityIconMove
+        [ Components.TimeLine.ActivityIcon.icon Components.TimeLine.ActivityIcon.Move
         , span [ class "activity-type" ]
             [ text title ]
         , div [ class "distance-text", attribute "style" "" ]

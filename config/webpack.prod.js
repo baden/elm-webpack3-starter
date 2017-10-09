@@ -54,6 +54,7 @@ module.exports = function(options) {
       new OptimizeJsPlugin({
               sourceMap: false
           }),
+      new webpack.optimize.DedupePlugin(),
       new UglifyJsPlugin({
               parallel: true,
               uglifyOptions: {

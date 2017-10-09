@@ -1,12 +1,12 @@
-module Components.TimeLine.CampEvent exposing (campEvent, CampEvent)
+module Components.TimeLine.CampEvent exposing (CampEvent, campEvent)
 
-import Html exposing (Html, div, text, i, hr, span, a)
-import Html.Attributes exposing (class, tabindex, attribute, title, href)
-import Svg exposing (svg, line)
-import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
 import Components.TimeLine.Event exposing (event_duration)
-import Components.TimeLine.Item exposing (item, item_content, item_title, item_title_content, item_event, item_subtitle)
 import Components.TimeLine.Icons as I
+import Components.TimeLine.Item exposing (item, item_content, item_event, item_subtitle, item_title, item_title_content)
+import Html exposing (Html, div, hr, text)
+import Html.Attributes exposing (attribute, class)
+import Svg exposing (line, svg)
+import Svg.Attributes as S exposing (strokeLinecap, x1, x2, y1, y2)
 
 
 type alias CampEvent =
@@ -25,26 +25,27 @@ campEvent ( ( before, after ), place_icon, place, ( from, to ), address ) =
             , item_event ( "Включено зажигание", ( "14:43", "" ) )
             ]
     in
-        div []
-            [ (item "place-history-moment-outer" Nothing)
-                [ timeline_svg ( before, after )
-                , div [ class "segment-divider" ] []
-                , place_icon
-                , (item_content True)
-                    ((div []
-                        [ item_title
-                            [ event_place place
-                            , event_duration ( from, to )
-                            ]
-                        , item_subtitle address
+    div []
+        [ item "place-history-moment-outer"
+            Nothing
+            [ timeline_svg ( before, after )
+            , div [ class "segment-divider" ] []
+            , place_icon
+            , item_content True
+                (div []
+                    [ item_title
+                        [ event_place place
+                        , event_duration ( from, to )
                         ]
-                     )
-                        :: visits
-                    )
-                  -- , event_history low_confidence
-                , hr [ class "moment-divider" ] []
-                ]
+                    , item_subtitle address
+                    ]
+                    :: visits
+                )
+
+            -- , event_history low_confidence
+            , hr [ class "moment-divider" ] []
             ]
+        ]
 
 
 
@@ -67,14 +68,28 @@ timeline_svg ( t, b ) =
     svg [ S.class "timeline-item-svg" ]
         [ line
             (if t then
-                [ S.class "timeline-item-svg-line", strokeLinecap "round", attribute "style" "stroke: rgb(1, 87, 155);", x1 "7", x2 "7", y1 "0", y2 "41" ]
+                [ S.class "timeline-item-svg-line"
+                , strokeLinecap "round"
+                , attribute "style" "stroke: rgb(1, 87, 155);"
+                , x1 "7"
+                , x2 "7"
+                , y1 "0"
+                , y2 "41"
+                ]
              else
                 [ S.class "", attribute "style" "display:none" ]
             )
             []
         , line
             (if b then
-                [ S.class "timeline-item-svg-line", strokeLinecap "round", attribute "style" "stroke: rgb(1, 87, 155);", x1 "7", x2 "7", y1 "41", y2 "100%" ]
+                [ S.class "timeline-item-svg-line"
+                , strokeLinecap "round"
+                , attribute "style" "stroke: rgb(1, 87, 155);"
+                , x1 "7"
+                , x2 "7"
+                , y1 "41"
+                , y2 "100%"
+                ]
              else
                 [ S.class "", attribute "style" "display:none" ]
             )

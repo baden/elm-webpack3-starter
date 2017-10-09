@@ -2,8 +2,7 @@ module Api exposing (Account, fetch)
 
 import Http
 import Json.Decode as JD
-import Json.Decode.Pipeline exposing (decode, hardcoded, optional, required)
-import Time
+import Json.Decode.Pipeline exposing (decode, required)
 
 
 type alias Account =

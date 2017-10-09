@@ -1,19 +1,19 @@
 module Components.TimeLine.TravelEvent
     exposing
-        ( travel_event
+        ( TravelEvent
         , defaultTravelEvent
-        , TravelEvent
         , toggleEvent
+        , travel_event
         )
 
-import Html exposing (Html, button, div, text, i, span, hr, node, img, a)
-import Html.Attributes exposing (class, type_, tabindex, attribute, title, src, href)
-import Svg exposing (svg, line)
-import Svg.Attributes as S exposing (version, viewBox, x, y, x1, y1, x2, y2, strokeLinecap)
 import Components.TimeLine.ActivityIcon
 import Components.TimeLine.Event exposing (event_duration)
-import Components.TimeLine.Item exposing (item, item_content, item_title)
 import Components.TimeLine.Icons as I
+import Components.TimeLine.Item exposing (item, item_content, item_title)
+import Html exposing (Html, div, hr)
+import Html.Attributes exposing (attribute, class)
+import Svg exposing (line, svg)
+import Svg.Attributes as S exposing (x1, x2, y1, y2)
 
 
 type alias TravelEvent =
@@ -46,10 +46,11 @@ travel_event model msg moments =
         [ div
             [ class <|
                 "travel-segment"
-                    ++ if model.expanded then
-                        " expanded"
-                       else
-                        ""
+                    ++ (if model.expanded then
+                            " expanded"
+                        else
+                            ""
+                       )
             ]
             [ travel_segment msg
             , hr [ class "moment-divider" ] []
@@ -64,14 +65,15 @@ travel_event model msg moments =
 
 travel_segment : msg -> Html msg
 travel_segment msg =
-    (item "travel-segment-summary" (Just msg))
+    item "travel-segment-summary"
+        (Just msg)
         [ activity_svg_line
         , travel_segment_expander
-        , (item_content False)
+        , item_content False
             [ item_title
                 [ div [ class "travel-segment-summary-itmes" ]
-                    [ travel_segment_item Components.TimeLine.ActivityIcon.ActivityIconMove
-                    , travel_segment_item Components.TimeLine.ActivityIcon.ActivityIconCamp
+                    [ travel_segment_item Components.TimeLine.ActivityIcon.Move
+                    , travel_segment_item Components.TimeLine.ActivityIcon.Camp
                     ]
                 , event_duration ( "3 часа 52 минуты", "" )
                 ]

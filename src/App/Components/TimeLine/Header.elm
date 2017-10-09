@@ -1,8 +1,8 @@
-module Components.TimeLine.Header exposing (header, Header)
+module Components.TimeLine.Header exposing (Header, header)
 
-import Html exposing (Html, div, text, i)
-import Html.Attributes exposing (class, tabindex, attribute, title)
 import Components.TimeLine.Icons as I
+import Html exposing (Html, div, text)
+import Html.Attributes exposing (class)
 
 
 -- import Html.Events exposing (onClick)
@@ -11,7 +11,8 @@ import Components.TimeLine.Icons as I
 type alias Header =
     { day :
         String
-        -- TODO: Date?
+
+    -- TODO: Date?
     , comment : String
     }
 

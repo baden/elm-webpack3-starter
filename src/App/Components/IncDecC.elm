@@ -12,9 +12,9 @@ module Components.IncDecC
 
 -- import Json.Decode as Json
 
-import Html exposing (Attribute, Html, button, div, text)
+import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, type_)
-import Html.Events exposing (onClick, targetValue)
+import Html.Events exposing (onClick)
 import LensChild as L
 import Monocle.Lens as Lens exposing (Lens)
 import Return exposing (Return)
@@ -75,7 +75,7 @@ send msg =
 -- init : ( Model, Cmd (Msg pmsg) )
 
 
-init : ( Model, Cmd Msg )
+init : Return Msg Model
 init =
     -- Return.singleton defaultModel
     Return.return defaultModel (send Increment)
@@ -134,7 +134,7 @@ subscriptions : Model -> Sub Msg
 subscriptions =
     always <|
         Sub.batch
-            [--Time.every second Tick
+            [ Time.every second Tick
             ]
 
 

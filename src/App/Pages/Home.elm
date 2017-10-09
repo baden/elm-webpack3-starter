@@ -13,9 +13,9 @@ import Components.IncDec as IncDec
 import Components.IncDecC as IncDecC
 import Components.Loader exposing (loader)
 import Helper exposing (link)
-import Html exposing (Html, a, button, div, text)
-import Html.Attributes exposing (class, href, type_)
-import Html.Events exposing (onClick, onWithOptions)
+import Html exposing (Html, button, div, text)
+import Html.Attributes exposing (class, type_)
+import Html.Events exposing (onClick)
 import LensChild as L
 import Monocle.Lens exposing (Lens)
 import Return exposing (Return)
@@ -124,7 +124,7 @@ initModel i1 i2 i3 =
     }
 
 
-init : ( Model, Cmd Msg )
+init : Return Msg Model
 init =
     Return.map3 initModel
         (L.init incdec1Component)
@@ -134,19 +134,17 @@ init =
 
 
 -- (L.init incdecCComponent)
+-- incdecC_effect : Maybe IncDecC.ParentMsg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
+-- incdecC_effect msg =
+--     case msg of
+--         Nothing ->
+--             Return.map (\m -> { m | message = "Not here" })
+--
+--         Just IncDecC.IncDecC_Boo ->
+--             Return.map (\m -> { m | message = "Boo" })
 
 
-incdecC_effect : Maybe IncDecC.ParentMsg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
-incdecC_effect msg =
-    case msg of
-        Nothing ->
-            Return.map (\m -> { m | message = "Not here" })
-
-        Just IncDecC.IncDecC_Boo ->
-            Return.map (\m -> { m | message = "Boo" })
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Return Msg Model
 update msg =
     Return.singleton
         >> (case msg of
@@ -162,8 +160,8 @@ update msg =
 
                 IncDecCMessage u lens subMsg ->
                     L.updateP u lens subMsg IncDecCMessage <|
-                        \msg ->
-                            case msg of
+                        \cmsg ->
+                            case cmsg of
                                 Nothing ->
                                     Return.map (\m -> { m | message = "Not here" })
 
@@ -253,6 +251,7 @@ view model =
             (model.incdecs
                 |> Array.indexedMap
                     (\i incdec ->
+                        -- TODO: not used incdec ?
                         div [ class "row" ]
                             [ div [ class "col-sm" ]
                                 [ L.view (incdecComponent i) model
@@ -276,8 +275,8 @@ view model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ --Time.every second Tick
-          L.subscriptions incdec1Component model
+        [ Time.every second Tick
+        , L.subscriptions incdec1Component model
         , L.subscriptions incdec2Component model
         , L.subscriptions incdecCComponent model
         ]

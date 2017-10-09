@@ -1,23 +1,23 @@
 module Page
     exposing
-        ( Page(..)
+        ( Model
         , Msg
-        , Model
-        , pageSubs
+        , Page(..)
         , init
+        , pageSubs
         , update
         , view
         )
 
 import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)
-import Navigation exposing (Location)
-import UrlParser exposing (..)
+import Navigation
 import Pages.Account as AccountPage
 import Pages.Home as HomePage
 import Pages.Login as LoginPage
 import Pages.Map as MapPage
 import Return exposing (Return)
+import UrlParser exposing (Parser, map, oneOf, parseHash, parsePath, s, top)
 
 
 type Page
@@ -66,11 +66,12 @@ pageParser =
         , map Login (s "login")
         , map Map (s "map")
         , map Home top
-          -- , map System (s "system" </> string)
+
+        -- , map System (s "system" </> string)
         ]
 
 
-init : Navigation.Location -> ( Model, Cmd Msg )
+init : Navigation.Location -> Return Msg Model
 init location =
     let
         -- pageView =
@@ -82,54 +83,54 @@ init location =
                     pageModel page
                 )
     in
-        case parse location of
-            Home ->
-                HomePage.init
-                    |> mapToCurrentPage HomePageMsg HomePage
+    case parse location of
+        Home ->
+            HomePage.init
+                |> mapToCurrentPage HomePageMsg HomePage
 
-            -- |> Return.command pageView
-            Account ->
-                AccountPage.init
-                    |> mapToCurrentPage AccountPageMsg AccountPage
+        -- |> Return.command pageView
+        Account ->
+            AccountPage.init
+                |> mapToCurrentPage AccountPageMsg AccountPage
 
-            Login ->
-                LoginPage.init
-                    |> mapToCurrentPage LoginPageMsg LoginPage
+        Login ->
+            LoginPage.init
+                |> mapToCurrentPage LoginPageMsg LoginPage
 
-            Map ->
-                MapPage.init
-                    |> mapToCurrentPage MapPageMsg MapPage
+        Map ->
+            MapPage.init
+                |> mapToCurrentPage MapPageMsg MapPage
 
-            -- |> Return.effect_ fetchNewsletterFiles
-            -- |> Return.command pageView
-            --
-            -- Page.System name ->
-            --     SystemPage.init name
-            --         |> mapToCurrentPage NewsletterMsg NewsletterPage
-            --         |> Return.andThen (fetchNewsletter name)
-            --         |> Return.effect_ fetchNewsletterFiles
-            --         |> Return.command pageView
-            NotFound ->
-                ( NotFoundPage, Cmd.none )
+        -- |> Return.effect_ fetchNewsletterFiles
+        -- |> Return.command pageView
+        --
+        -- Page.System name ->
+        --     SystemPage.init name
+        --         |> mapToCurrentPage NewsletterMsg NewsletterPage
+        --         |> Return.andThen (fetchNewsletter name)
+        --         |> Return.effect_ fetchNewsletterFiles
+        --         |> Return.command pageView
+        NotFound ->
+            ( NotFoundPage, Cmd.none )
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Return Msg Model
 update msg model =
     case ( msg, model ) of
-        ( HomePageMsg msg, HomePage page ) ->
-            HomePage.update msg page
+        ( HomePageMsg pmsg, HomePage page ) ->
+            HomePage.update pmsg page
                 |> Return.mapBoth HomePageMsg HomePage
 
-        ( AccountPageMsg msg, AccountPage page ) ->
-            AccountPage.update msg page
+        ( AccountPageMsg pmsg, AccountPage page ) ->
+            AccountPage.update pmsg page
                 |> Return.mapBoth AccountPageMsg AccountPage
 
-        ( LoginPageMsg msg, LoginPage page ) ->
-            LoginPage.update msg page
+        ( LoginPageMsg pmsg, LoginPage page ) ->
+            LoginPage.update pmsg page
                 |> Return.mapBoth LoginPageMsg LoginPage
 
-        ( MapPageMsg msg, MapPage page ) ->
-            MapPage.update msg page
+        ( MapPageMsg pmsg, MapPage page ) ->
+            MapPage.update pmsg page
                 |> Return.mapBoth MapPageMsg MapPage
 
         _ ->
@@ -137,7 +138,7 @@ update msg model =
                 _ =
                     Debug.log "received unexpected message" msg
             in
-                Return.singleton model
+            Return.singleton model
 
 
 view : Model -> Html Msg

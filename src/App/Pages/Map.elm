@@ -31,28 +31,29 @@ type Msg
     | NoOp
 
 
-init : ( Model, Cmd Msg )
+init : Return Msg Model
 init =
     let
         ( timelineModel, timelineCmd ) =
             TimeLine.init
                 |> Return.mapCmd TimeLineMessage
     in
-        Return.singleton
-            { timeline = timelineModel
-            }
-            |> Return.command timelineCmd
+    Return.singleton
+        { timeline = timelineModel
+        }
+        |> Return.command timelineCmd
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Return Msg Model
 update msg =
     Return.singleton
-        >> case msg of
-            NoOp ->
-                Return.zero
+        >> (case msg of
+                NoOp ->
+                    Return.zero
 
-            TimeLineMessage subMsg ->
-                refractl timelinel TimeLineMessage <| TimeLine.update subMsg
+                TimeLineMessage subMsg ->
+                    refractl timelinel TimeLineMessage <| TimeLine.update subMsg
+           )
 
 
 view : Model -> Html Msg
@@ -64,12 +65,13 @@ view model =
                 [ TimeLine.view model.timeline |> Html.map TimeLineMessage
                 ]
             ]
-          -- , div [ class "map-debug" ] [ text <| "MAP: WIP" ++ toString model ]
-          -- , div [ class "row" ]
-          --     [ div [ class "col-sm-10" ]
-          --         [ TimeLine.view model.timeline |> Html.map TimeLineMessage
-          --         ]
-          --     ]
+
+        -- , div [ class "map-debug" ] [ text <| "MAP: WIP" ++ toString model ]
+        -- , div [ class "row" ]
+        --     [ div [ class "col-sm-10" ]
+        --         [ TimeLine.view model.timeline |> Html.map TimeLineMessage
+        --         ]
+        --     ]
         ]
 
 

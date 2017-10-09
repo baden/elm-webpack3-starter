@@ -8,8 +8,8 @@ module Pages.Account
         , view
         )
 
-import Api exposing (Account, fetch)
-import Html exposing (Html, dd, div, dl, dt, p, text)
+import Api exposing (Account)
+import Html exposing (Html, dd, div, dl, dt, text)
 import Html.Attributes exposing (class)
 import Http
 

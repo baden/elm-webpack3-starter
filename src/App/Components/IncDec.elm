@@ -49,12 +49,12 @@ send msg =
         |> Task.perform identity
 
 
-init : ( Model, Cmd Msg )
+init : Return Msg Model
 init =
     Return.return defaultModel (send Increment)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Return Msg Model
 update msg =
     Return.singleton
         << (case msg of
@@ -76,7 +76,8 @@ view model =
         , button [ type_ "button", class "btn btn-primary", onClick Decrement ] [ text "-" ]
         , div [] [ text (toString model.value) ]
         , button [ type_ "button", class "btn btn-primary", onClick Increment ] [ text "+" ]
-        , div [] [ text (toString model.counter) ]
+
+        -- , div [] [ text (toString model.counter) ]
         ]
 
 
@@ -84,5 +85,5 @@ subscriptions : Model -> Sub Msg
 subscriptions =
     always <|
         Sub.batch
-            [--Time.every second Tick
+            [ Time.every second Tick
             ]

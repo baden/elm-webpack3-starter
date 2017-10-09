@@ -1,7 +1,7 @@
-module Components.TimeLine.PlaceIcon exposing (icon, PlaceIcon(..))
+module Components.TimeLine.PlaceIcon exposing (PlaceIcon(..), icon)
 
 import Html exposing (Html, div)
-import Html.Attributes exposing (class, attribute)
+import Html.Attributes exposing (attribute, class)
 
 
 type PlaceIcon
@@ -20,8 +20,8 @@ icon i =
                 PlaceIconPoi ->
                     "https://maps.gstatic.com/mapsactivities/icons/poi_icons/30_regular/generic_2x.png"
     in
-        div
-            [ class "timeline-item-icon place-icon"
-            , attribute "style" ("background-image: url(" ++ url ++ ");")
-            ]
-            []
+    div
+        [ class "timeline-item-icon place-icon"
+        , attribute "style" ("background-image: url(" ++ url ++ ");")
+        ]
+        []

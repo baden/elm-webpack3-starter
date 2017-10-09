@@ -3,20 +3,20 @@ module Components.TimeLine
         ( Model
         , Msg
         , init
+        , subscriptions
         , update
         , view
-        , subscriptions
         )
 
-import Html exposing (Html, button, div, text, i, span, hr, node, img, a)
-import Html.Attributes exposing (class, type_, tabindex, attribute, title, src, href)
-import Return exposing (Return)
-import Components.TimeLine.Header
-import Components.TimeLine.TopActivity
 import Components.TimeLine.CampEvent
+import Components.TimeLine.Header
 import Components.TimeLine.MoveEvent
-import Components.TimeLine.TravelEvent as TravelEvent
 import Components.TimeLine.PlaceIcon
+import Components.TimeLine.TopActivity
+import Components.TimeLine.TravelEvent as TravelEvent
+import Html exposing (Html, div)
+import Html.Attributes exposing (class)
+import Return exposing (Return)
 
 
 type alias Model =
@@ -40,23 +40,24 @@ type Msg
     | ExpandTravel2
 
 
-init : ( Model, Cmd Msg )
+init : Return Msg Model
 init =
     Return.singleton defaultModel
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Return Msg Model
 update msg =
     Return.singleton
-        >> case msg of
-            NoOp ->
-                Return.zero
+        >> (case msg of
+                NoOp ->
+                    Return.zero
 
-            ExpandTravel1 ->
-                Return.map (\m -> { m | travelEvent1 = TravelEvent.toggleEvent m.travelEvent1 })
+                ExpandTravel1 ->
+                    Return.map (\m -> { m | travelEvent1 = TravelEvent.toggleEvent m.travelEvent1 })
 
-            ExpandTravel2 ->
-                Return.map (\m -> { m | travelEvent2 = TravelEvent.toggleEvent m.travelEvent2 })
+                ExpandTravel2 ->
+                    Return.map (\m -> { m | travelEvent2 = TravelEvent.toggleEvent m.travelEvent2 })
+           )
 
 
 view : Model -> Html Msg
@@ -65,10 +66,10 @@ view model =
         headerModel =
             Components.TimeLine.Header.Header "Четверг, 10 Сентября 2015 Г." "Данные могут быть не полными"
     in
-        div [ class "timeline-wrapper" ]
-            [ Components.TimeLine.Header.header headerModel
-            , content model
-            ]
+    div [ class "timeline-wrapper" ]
+        [ Components.TimeLine.Header.header headerModel
+        , content model
+        ]
 
 
 content : Model -> Html Msg
@@ -79,16 +80,16 @@ content model =
                 { distance = "139 км", duration = "5 ч. 6 мин." }
                 { duration = "5 ч. 6 мин." }
     in
-        div [ class "timeline-content" ]
-            [ div []
-                [ Components.TimeLine.TopActivity.top top_activity_model
-                , event model
-                , event2 model
-                , event3 model
-                , event4 model
-                , eventL model
-                ]
+    div [ class "timeline-content" ]
+        [ div []
+            [ Components.TimeLine.TopActivity.top top_activity_model
+            , event model
+            , event2 model
+            , event3 model
+            , event4 model
+            , eventL model
             ]
+        ]
 
 
 poi_image : Html Msg
@@ -102,18 +103,36 @@ home_image =
 
 
 event : Model -> Html Msg
-event model =
-    Components.TimeLine.CampEvent.campEvent ( ( False, True ), home_image, "Дом", ( "11:02", "15:20" ), "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" )
+event _ =
+    Components.TimeLine.CampEvent.campEvent
+        ( ( False, True )
+        , home_image
+        , "Дом"
+        , ( "11:02", "15:20" )
+        , "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область"
+        )
 
 
 event3 : Model -> Html Msg
-event3 model =
-    Components.TimeLine.CampEvent.campEvent ( ( True, True ), poi_image, "Склад №1", ( "16:02", "16:05" ), "Днипро, Днепропетровская область, 49000" )
+event3 _ =
+    Components.TimeLine.CampEvent.campEvent
+        ( ( True, True )
+        , poi_image
+        , "Склад №1"
+        , ( "16:02", "16:05" )
+        , "Днипро, Днепропетровская область, 49000"
+        )
 
 
 eventL : Model -> Html Msg
-eventL model =
-    Components.TimeLine.CampEvent.campEvent ( ( True, False ), home_image, "Гараж", ( "23:20", "23:59" ), "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область" )
+eventL _ =
+    Components.TimeLine.CampEvent.campEvent
+        ( ( True, False )
+        , home_image
+        , "Гараж"
+        , ( "23:20", "23:59" )
+        , "вулиця Мічуріна, 8, Кам’янське, Дніпропетровська область"
+        )
 
 
 event2 : Model -> Html Msg

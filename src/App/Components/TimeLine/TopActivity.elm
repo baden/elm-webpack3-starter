@@ -1,13 +1,16 @@
-module Components.TimeLine.TopActivity exposing (top, TopActivity)
+module Components.TimeLine.TopActivity exposing (TopActivity, top)
 
-import Html exposing (Html, div, text, i)
-import Html.Attributes exposing (class, tabindex, attribute, title)
 import Components.TimeLine.ActivityIcon
 import Components.TimeLine.Item exposing (item)
+import Html exposing (Html, div, text)
+import Html.Attributes exposing (class, title)
 
 
 type alias TopActivity =
-    { moves : { distance : String, duration : String }
+    { moves :
+        { distance : String
+        , duration : String
+        }
     , camp : { duration : String }
     }
 
@@ -18,9 +21,10 @@ type alias TopActivity =
 
 top : TopActivity -> Html msg
 top model =
-    (item "top-activities" Nothing)
-        [ top_activity ( "Движение", Components.TimeLine.ActivityIcon.ActivityIconMove, model.moves.distance, model.moves.duration )
-        , top_activity ( "Стоянка", Components.TimeLine.ActivityIcon.ActivityIconCamp, "", model.camp.duration )
+    item "top-activities"
+        Nothing
+        [ top_activity ( "Движение", Components.TimeLine.ActivityIcon.Move, model.moves.distance, model.moves.duration )
+        , top_activity ( "Стоянка", Components.TimeLine.ActivityIcon.Camp, "", model.camp.duration )
         ]
 
 
@@ -38,7 +42,7 @@ top model =
 
 top_activity : ( String, Components.TimeLine.ActivityIcon.ActivityIcon, String, String ) -> Html msg
 top_activity ( titl, icon, dist, dur ) =
-    div [ class "top-activity" ]
+    div [ class "top-activity", title titl ]
         [ Components.TimeLine.ActivityIcon.icon icon
         , div [ class "top-activity-text" ]
             [ div []

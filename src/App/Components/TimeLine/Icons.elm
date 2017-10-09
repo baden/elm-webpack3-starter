@@ -1,18 +1,28 @@
 module Components.TimeLine.Icons exposing (..)
 
-import Html exposing (Html, text, i)
-import Html.Attributes exposing (class, tabindex, attribute, title)
+import Html exposing (Html, i, text)
+import Html.Attributes exposing (attribute, class, tabindex, title)
 
 
 prev_day : Html msg
 prev_day =
-    i [ class "timeline-header-button previous-date-range-button material-icons-extended material-icon-with-ripple rtl-mirrored", title "Предыдущий день", attribute "role" "button", tabindex 0 ]
+    i
+        [ class "timeline-header-button previous-date-range-button material-icons-extended material-icon-with-ripple rtl-mirrored"
+        , title "Предыдущий день"
+        , attribute "role" "button"
+        , tabindex 0
+        ]
         [ text "chevron_left " ]
 
 
 next_day : Html msg
 next_day =
-    i [ class "timeline-header-button next-date-range-button material-icons-extended material-icon-with-ripple rtl-mirrored", title "Следующий день", attribute "role" "button", tabindex 0 ]
+    i
+        [ class "timeline-header-button next-date-range-button material-icons-extended material-icon-with-ripple rtl-mirrored"
+        , title "Следующий день"
+        , attribute "role" "button"
+        , tabindex 0
+        ]
         [ text "chevron_right " ]
 
 
