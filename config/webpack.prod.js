@@ -4,6 +4,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const path = require('path');
+const ShakePlugin = require('webpack-common-shake').Plugin;
+const fs = require('fs');
 
 const outputPath = path.join(__dirname, '../dist');
 // const outputFilename = isProd ? '[name]-[hash].js' : '[name].js'
@@ -51,23 +53,58 @@ module.exports = function(options) {
     },
     plugins: [
       new webpack.NoEmitOnErrorsPlugin(),
+      new ShakePlugin({
+        onGraph: (dot) => {
+          fs.writeFileSync("shake.dot", dot);
+        }
+      }),
       new OptimizeJsPlugin({
               sourceMap: false
           }),
-      new webpack.optimize.DedupePlugin(),
+      // new webpack.optimize.DedupePlugin(),
       new UglifyJsPlugin({
-              parallel: true,
+              // parallel: true,
               uglifyOptions: {
                 ie8: false,
                 ecma: 6,
                 warnings: true,
                 mangle: true, // debug false
+                compress: {
+                  passes: 30,
+                  unsafe: true,
+                  unsafe_comps: true,
+                  dead_code: true,
+                  unsafe_Func: true,
+                  unsafe_math: true,
+                  unsafe_methods: true,
+                  unsafe_proto: true,
+                  unsafe_regexp: true,
+                  comparisons: true,
+                  // evaluate: true,
+                  unsafe_arrows: true,
+                  pure_getters: true,
+
+                  keep_fargs: false,
+                  // pure_funcs: ['Math.floor'],
+                  // pure_funcs: ['_user$project$Components_IncDec$Model'],
+
+                  // confilted with pass > 1
+                  hoist_funs: true,
+                  // hoist_vars: true,
+
+                  // For production?
+                  drop_console: true,
+                  drop_debugger: true,
+                  pure_funcs: ['console.log'],
+
+                },
+
                 output: {
-                  comments: false,
-                  beautify: false,  // debug true
+                  comments: true,
+                  beautify: true,  // debug true
                 }
               },
-              warnings: true,
+              // warnings: true,
             }),
       new ExtractTextPlugin("css/[name]-[contenthash].css"),
       new HtmlWebpackPlugin({

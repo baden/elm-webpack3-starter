@@ -1,0 +1,50 @@
+digraph {
+  ranksep=1.2;
+  subgraph "cluster://src/index.js" {
+    label="src/index.js";
+    color=black;
+    "{src/index.js}/require" [label=require shape=diamond];
+  }
+  subgraph "cluster://src/app.js" {
+    label="src/app.js";
+    color=red;
+    "{src/app.js}/require" [label=require shape=diamond];
+    "{src/app.js}[[*]]" [label="[*]" color=red];
+  }
+  "{src/index.js}/require" -> "{src/app.js}[[*]]";
+  subgraph "cluster://src/all.scss" {
+    label="src/all.scss";
+    color=red;
+    "{src/all.scss}/require" [label=require shape=diamond];
+    "{src/all.scss}[push]" [label="push" color=red];
+    "{src/all.scss}[[*]]" [label="[*]" color=red];
+  }
+  "{src/all.scss}/require" -> "{src/all.scss}[push]";
+  "{src/index.js}/require" -> "{src/all.scss}[[*]]";
+  subgraph "cluster://node_modules/style-loader/lib/addStyles.js" {
+    label="node_modules/style-loader/lib/addStyles.js";
+    color=red;
+    "{node_modules/style-loader/lib/addStyles.js}/require" [label=require shape=diamond];
+  }
+  subgraph "cluster://node_modules/style-loader/lib/urls.js" {
+    label="node_modules/style-loader/lib/urls.js";
+    color=red;
+    "{node_modules/style-loader/lib/urls.js}/require" [label=require shape=diamond];
+    "{node_modules/style-loader/lib/urls.js}[[*]]" [label="[*]" color=red];
+  }
+  "{node_modules/style-loader/lib/addStyles.js}/require" -> "{node_modules/style-loader/lib/urls.js}[[*]]";
+  subgraph "cluster://node_modules/css-loader/lib/css-base.js" {
+    label="node_modules/css-loader/lib/css-base.js";
+    color=red;
+    "{node_modules/css-loader/lib/css-base.js}/require" [label=require shape=diamond];
+    "{node_modules/css-loader/lib/css-base.js}[[*]]" [label="[*]" color=red];
+  }
+  "{src/all.scss}/require" -> "{node_modules/css-loader/lib/css-base.js}[[*]]";
+  subgraph "cluster://src/App/App.elm" {
+    label="src/App/App.elm";
+    color=black;
+    "{src/App/App.elm}/require" [label=require shape=diamond];
+    "{src/App/App.elm}[App]" [label="App" color=black];
+  }
+  "{src/app.js}/require" -> "{src/App/App.elm}[App]";
+}

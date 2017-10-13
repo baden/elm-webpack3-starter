@@ -92,10 +92,10 @@ update updater lens subMsg mergeBack ( model, cmd ) =
         fx =
             \m -> updater subMsg m
     in
-    lens.get model
-        |> fx
-        |> Return.mapBoth (mergeBack updater lens) (flip lens.set model)
-        |> Return.command cmd
+        lens.get model
+            |> fx
+            |> Return.mapBoth (mergeBack updater lens) (flip lens.set model)
+            |> Return.command cmd
 
 
 
@@ -107,9 +107,8 @@ update updater lens subMsg mergeBack ( model, cmd ) =
 
 updateP updater lens subMsg mergeBack effect ( model, cmd ) =
     let
-        _ =
-            Debug.log "updateP" ( lens, mergeBack, fx, effect, ( model, cmd ) )
-
+        -- _ =
+        --     Debug.log "updateP" ( lens, mergeBack, fx, effect, ( model, cmd ) )
         fx =
             \m -> updater subMsg m
 
@@ -119,10 +118,10 @@ updateP updater lens subMsg mergeBack effect ( model, cmd ) =
         ( newCMod, newCmsg, newPmsg ) =
             fx cmod
     in
-    ( newCMod, newCmsg )
-        |> Return.mapBoth (mergeBack updater lens) (flip lens.set model)
-        |> Return.command cmd
-        |> effect newPmsg
+        ( newCMod, newCmsg )
+            |> Return.mapBoth (mergeBack updater lens) (flip lens.set model)
+            |> Return.command cmd
+            |> effect newPmsg
 
 
 

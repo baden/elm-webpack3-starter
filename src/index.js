@@ -1,10 +1,12 @@
 require('./all.scss');
 // require('bootstrap-css');
-var Elm = require('./App/App.elm');
+// var Elm = require('./App/App.elm');
 // import Elm from './App/App.elm';
+const embed = require('./app.js');
+console.dir(embed);
 
 var element = document.getElementById('elm-app');
-var App = Elm.App.embed(element);
+var App = embed(element);
 
 // Copyright 2014-2017 The Bootstrap Authors
 // Copyright 2014-2017 Twitter, Inc.
